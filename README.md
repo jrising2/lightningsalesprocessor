@@ -2,13 +2,13 @@
 Capstone project for Team Icebreaker
 
 ##File Structure
-lightningsalesprocessor/
-|--css/ - CSS files for styling
-|--img/ - Various images used in the project
-|--js/ - Javascript files
-|--includes/ - Various PHP files that are going to be included in other pages (header, footer, menus, etc).
-|--cust/ - Code that deals with the customer end of the system
-|--empl/ - Code that deals with the employee end of the system
+lightningsalesprocessor/  
+|--css/ - CSS files for styling  
+|--img/ - Various images used in the project  
+|--js/ - Javascript files  
+|--includes/ - Various PHP files that are going to be included in other pages (header, footer, menus, etc).  
+|--cust/ - Code that deals with the customer end of the system  
+|--empl/ - Code that deals with the employee end of the system  
 
 ##To-Do List:
 1. Get front-end HTML done for the customer side
