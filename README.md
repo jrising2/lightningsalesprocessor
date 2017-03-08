@@ -14,9 +14,8 @@ lightningsalesprocessor/
 ##To-Do List:
 1. Get front-end HTML done for the customer side
 	- Need to get the core marketplace with the product catalog, product details, account page, checkout, login, tracking of past orders, etc.
-2. Turn those HTML pages into PHP and add PHP code to make them functional dynamic pages.
-	- The database will need some fake data and the PHP will access the dummy data to populate the various pages.
-3. Get front-end HTML done for employees
+2. Get front-end HTML done for employees
 	- Employee home page, tracking system, report page?, etc.
-4. Turn those HTML pages into PHP, functional, dynamic pages.
+3. Turn those HTML pages into PHP and add PHP code to make them functional dynamic pages.
+	- The database will need some fake data and the PHP will access the dummy data to populate the various pages.
 	- Access the database to populate the pages with actual information and make them function.
