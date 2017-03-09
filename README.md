@@ -7,7 +7,6 @@ lightningsalesprocessor/
 |--img/ - Various images used in the project  
 |--js/ - Javascript files  
 |--includes/ - Various PHP files that are going to be included in other pages (header, footer, menus, etc).  
-|--cust/ - Code that deals with the customer end of the system  
 |--empl/ - Code that deals with the employee end of the system  
 |--htmltemplates/ - All of the HTML that will be used in the PHP
 
