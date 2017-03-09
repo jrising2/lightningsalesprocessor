@@ -8,6 +8,7 @@
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/callouts.css">
 </head>
 
 <body>
@@ -42,17 +43,6 @@
                 <div class="col-md-4">
                     <h1>Book Store</h1>
                 </div>
-                <div class="navbar-collapse pull-right">
-                    <form class="form-inline" role="search">
-                        <div class="input-group">
-                            <label class="sr-only" for="search">Search</label>
-                            <input type="text" class="form-control" placeholder="Search" name="search">
-                            <span class="input-group-btn">
-			                <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
-                            </span>
-                        </div>
-                    </form>
-                </div>
             </div>
 
             <!-- Main Navigation Start -->
@@ -68,10 +58,10 @@
                     </div>
                     <div class="collapse navbar-collapse navbar-ex1-collapse">
                         <ul class="nav navbar-nav">
-                            <li><a href="#">Home</a></li>
-                            <li><a href="#">About Us</a></li>
-                            <li class="active"><a href="#">Books</a></li>
-                            <li><a href="#">Customer Service</a></li>
+                            <li class="active"><a href="#">Tracking</a></li>
+                            <li><a href="#">Orders</a></li>
+                            <li><a href="#">Inventory</a></li>
+                            <li><a href="#">Generate Printables</a></li>
                         </ul>
                     </div>
                 </nav>
@@ -80,70 +70,98 @@
 
         </header>
 
-        <!-- Main Body Start -->
-	
-	<!-- Whether this search is needed depends on what we decide to do with this page.
-	     For now, I've included a basic search bar and sort by option dropdown list. -->
-	<div class="dropdown" style="text-align:center">
-	  <input type="text" style="width:500px">
-	  <button type="submit" class="btn btn-default">Search</button>
-	  
-	  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Sort by
-	    <span class="caret"></span></button>
-	  <ul class="dropdown-menu">
-	    <li><a href="#">Relevance</a></li>
-	    <li><a href="#">Price: Low to High</a></li>
-	    <li><a href="#">Price: High to Low</a></li>
-	    <li><a href="#">Rating</a></li>
-	    </ul>
-	  </div>
-	
-	<hr />
-	
-	<div class="row">
-	  <div class="col-md-3"><img class="img-responsive" src="http://placehold.it/200x200"></div>
-	  <div class="col-md-3"><img class="img-responsive" src="http://placehold.it/200x200"></div>
-	  <div class="col-md-3"><img class="img-responsive" src="http://placehold.it/200x200"></div>
-	  <div class="col-md-3"><img class="img-responsive" src="http://placehold.it/200x200"></div>
-	  </div>
-	
-	<div class="row">
-	  <!-- With labels, just in case.
-	       <div class="col-md-3">
-		 <p>
-		   <label for="title">Title:</label> 
-		   <label for="titlename">One</label><br />
-		   <label for="price">Price:</label> 
-		   <label for="priceamount">Two</label><br />
-		   <label for="released">Released:</label> 
-		   <label for="releasedate">Three</label><br />
-		   <label for="rating">Rating:</label> 
-		   <label for="ratingcount">Four</label><br />
-		   </p>
-		 </div>
-	       -->
-	  <div class="col-md-3"><p>Title: One<br />Price: Two<br />Release Date: Three<br />Rating: Four</p></div>
-	  <div class="col-md-3"><p>Title: One<br />Price: Two<br />Release Date: Three<br />Rating: Four</p></div>
-	  <div class="col-md-3"><p>Title: One<br />Price: Two<br />Release Date: Three<br />Rating: Four</p></div>
-	  <div class="col-md-3"><p>Title: One<br />Price: Two<br />Release Date: Three<br />Rating: Four</p></div>
-	  </div>
-	
-	<hr />
-	
-	<div class="row">
-	  <div class="col-md-3"><img class="img-responsive" src="http://placehold.it/200x200"></div>
-	  <div class="col-md-3"><img class="img-responsive" src="http://placehold.it/200x200"></div>
-	  <div class="col-md-3"><img class="img-responsive" src="http://placehold.it/200x200"></div>
-	  <div class="col-md-3"><img class="img-responsive" src="http://placehold.it/200x200"></div>
-	  </div>
-	
-	<div class="row">
-	  <div class="col-md-3"><p>Title: One<br />Price: Two<br />Release Date: Three<br />Rating: Four</p></div>
-	  <div class="col-md-3"><p>Title: One<br />Price: Two<br />Release Date: Three<br />Rating: Four</p></div>
-	  <div class="col-md-3"><p>Title: One<br />Price: Two<br />Release Date: Three<br />Rating: Four</p></div>
-	  <div class="col-md-3"><p>Title: One<br />Price: Two<br />Release Date: Three<br />Rating: Four</p></div>
-	  </div>
-	
+        <!-- Main Body Start, uses similar implementation to checkout and transaction history -->
+
+
+        <!-- Account Summary tab in the account page -->
+        <div id="In Progress" class="tab-pane fade in active">
+            <h2>Orders</h2>
+
+            <div class="panel-body">
+                <div class="row">
+                    <div class="row bs-callout bs-callout-danger">
+                        <div class="col-md-2">
+                            <p><strong>CustomerID</strong>
+                                <br>#00000000000000</p>
+                        </div>
+                        <div class="col-md-2">
+                            <p><strong>Shipping Address</strong> STREETADDRESS
+                                <br> City State Zip</p>
+                        </div>
+                        <div class="col-md-2">
+                            <p><strong>Condition</strong>
+                                <br> New/Used/Digital
+                            </p>
+                        </div>
+                        <div class="col-md-2">
+                            <p><strong>Status</strong>
+                                <br> In Queue</p>
+                        </div>
+                        <div class="col-md-2">
+                            <p><strong>EmployeeID</strong>
+                                <br> #0000000000000
+                            </p>
+                        </div>
+                        <div class="col-md-2 text-right">
+                            <br><a href="Accept Order">Accept</a></div>
+                    </div>
+                    <div class="row bs-callout bs-callout-warning">
+                        <div class="col-md-2">
+                            <p><strong>CustomerID</strong>
+                                <br>#00000000000000</p>
+                        </div>
+                        <div class="col-md-2">
+                            <p><strong>Shipping Address</strong> STREETADDRESS
+                                <br> City State Zip</p>
+                        </div>
+                        <div class="col-md-2">
+                            <p><strong>Condition</strong>
+                                <br> New/Used/Digital
+                            </p>
+                        </div>
+                        <div class="col-md-2">
+                            <p><strong>Status</strong>
+                                <br> In Progress</p>
+                        </div>
+                        <div class="col-md-2">
+                            <p><strong>EmployeeID</strong>
+                                <br> #0000000000000
+                            </p>
+                        </div>
+                        <div class="col-md-2 text-right">
+                            <br><a href="Accept Order">Accept</a></div>
+                    </div>
+                    <div class="row bs-callout bs-callout-success">
+                        <div class="col-md-2">
+                            <p><strong>CustomerID</strong>
+                                <br>#00000000000000</p>
+                        </div>
+                        <div class="col-md-2">
+                            <p><strong>Shipping Address</strong> STREETADDRESS
+                                <br> City State Zip</p>
+                        </div>
+                        <div class="col-md-2">
+                            <p><strong>Condition</strong>
+                                <br> New/Used/Digital
+                            </p>
+                        </div>
+                        <div class="col-md-2">
+                            <p><strong>Status</strong>
+                                <br> Complete</p>
+                        </div>
+                        <div class="col-md-2">
+                            <p><strong>EmployeeID</strong>
+                                <br> #0000000000000
+                            </p>
+                        </div>
+                        <div class="col-md-2 text-right">
+                            <br><a href="Accept Order">Accept</a></div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
         <!-- Main Body End -->
 
         <!-- Footer Start -->
@@ -197,7 +215,7 @@
         <!-- Footer End -->
 
         <!-- Bootstrap core JavaScript
-    ================================================== -->
+        ================================================== -->
         <!-- Placed at the end of the document so the pages load faster -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
