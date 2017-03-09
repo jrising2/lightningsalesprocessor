@@ -10,7 +10,7 @@ lightningsalesprocessor/
 |--empl/ - Code that deals with the employee end of the system  
 |--htmltemplates/ - All of the HTML that will be used in the PHP
 
-##To-Do List:
+##To-Do List: 
 1. Get front-end HTML done for the customer side
 	- Need to get the core marketplace with the product catalog, product details, account page, checkout, login, tracking of past orders, etc.
 2. Get front-end HTML done for employees
