@@ -7,89 +7,53 @@
     <title>Book Store</title>
 
     <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-    <style>*{font-family: 'Roboto';}.inline{display:inline;}.price{color:forestgreen;margin-left: 1em;font-size: 1.45em;</style>
 </head>
 
 <body>
+    <header class="mb-3">
+        <!-- Header Bar Start -->
+        <nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse">
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand" href="#">Bookstore</a>
+
+            <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Home<span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Books</a>
+                    </li>
+                </ul>
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="text" placeholder="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                    <a class="btn btn-outline-primary ml-2 my-sm-0" href="login.php">Login</a>
+                </form>
+            </div>
+        </nav>
+    </header>
+    <!-- Header Bar End -->
+
+    <!-- Main Body Start -->
     <div class="container">
-
-        <header>
-            <!-- Header Bar Start -->
-            <div id="topHeaderRow">
-                <nav class="navbar navbar-inverse " role="navigation">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                            <span class="sr-only">Toggle navigation</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <p class="navbar-text">Welcome to <strong>Book Store</strong></p>
-                    </div>
-
-                    <div class="collapse navbar-collapse navbar-ex1-collapse pull-right">
-                        <ul class="nav navbar-nav">
-                            <li><a href="#"><span class="glyphicon glyphicon-user"></span> Login</a></li>
-                            <li><a href="#"><span class="glyphicon glyphicon-shopping-cart"></span> Shopping Cart</a></li>
-                        </ul>
-                    </div>
-                </nav>
-            </div>
-            <!-- Header Bar End -->
-
-
-            <div class="row">
-                <div class="col-md-4">
-                    <h1>Books</h1>
-                </div>
-                <div class="navbar-collapse pull-right">
-                    <form class="form-inline" role="search">
-                        <div class="input-group">
-                            <label class="sr-only" for="search">Search</label>
-                            <input type="text" class="form-control" placeholder="Search" name="search">
-                            <span class="input-group-btn">
-	          <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
-                            </span>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <!-- Main Navigation Start -->
-            <div id="mainNavigationRow">
-                <nav class="navbar navbar-default" role="navigation">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                            <span class="sr-only">Toggle navigation</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                    </div>
-                    <div class="collapse navbar-collapse navbar-ex1-collapse">
-                        <ul class="nav navbar-nav">
-                            <li><a href="#">Home</a></li>
-                            <li><a href="#">About Us</a></li>
-                            <li class="active"><a href="#">Books</a></li>
-                            <li><a href="#">Customer Service</a></li>
-                        </ul>
-                    </div>
-                </nav>
-            </div>
-            <!-- Main Navigation End -->
-
-        </header>
-
-        <!-- Main Body Start -->
         <div class="row">
-            <div class="col-md-4"><img class="img-responsive" src="http://placehold.it/500x500"></div>
+            <div class="col-md-4"><img class="img-fluid" src="http://placehold.it/500x500"></div>
             <div class="col-md-8">
-                <div class="row"><h1 class="inline">Product Title</h1><p class="price inline">$100</p></div>
                 <div class="row">
-                    <a href="#" class="btn btn-success btn-sm">Add To Cart</a>
-                    <a href="#" class="btn btn-primary btn-sm">Add To Wishlist</a>
+                    <h1>Product Title</h1>
+                    <p class="text-success mt-3 ml-2">$100</p>
+                </div>
+                <div class="row">
+                    <a href="#" class="btn btn-success mr-1">Add To Cart</a>
+                    <a href="#" class="btn btn-primary">Add To Wishlist</a>
                     <hr>
                     <p>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec blandit, nisi non molestie rhoncus, dui magna venenatis arcu, ut ullamcorper magna neque ut turpis. Nulla ac dolor blandit nibh ultrices euismod. Curabitur venenatis molestie mi, quis condimentum neque hendrerit fermentum. Duis hendrerit dictum lectus ac imperdiet. Donec vel aliquam augue. Duis ac convallis neque. Duis posuere, nulla vitae faucibus ullamcorper, sem nisi accumsan orci, a ullamcorper urna lectus vitae metus. Suspendisse quis ante non leo ullamcorper finibus. Aliquam ut posuere metus. Fusce convallis enim at purus elementum pretium. Proin vel lacus sit amet odio blandit bibendum. Quisque sit amet libero iaculis, auctor lectus non, suscipit tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean viverra dignissim leo, in rutrum mauris cursus quis.
@@ -97,32 +61,56 @@
                 </div>
             </div>
         </div>
-        
-        <div class="row">
+
+        <div class="row mt-2">
             <div class="col-md-6">
                 <h2>Product Details</h2>
-                <table class="table table-bordered table-condensed table-responsive">
+                <table class="table table-bordered table-sm table-responsive">
                     <tr>
                         <th>Property</th>
                         <th>Detail</th>
                     </tr>
-                    <tr><td>ISBN</td><td>1000000000</td></tr>
-                    <tr><td>Book Edition</td><td>1st Edition</td></tr>
-                    <tr><td>Authors</td><td>Hawon Woo, Rebecca Chase</td></tr>
-                    <tr><td>Pages</td><td>500</td></tr>
+                    <tr>
+                        <td>ISBN</td>
+                        <td>1000000000</td>
+                    </tr>
+                    <tr>
+                        <td>Book Edition</td>
+                        <td>1st Edition</td>
+                    </tr>
+                    <tr>
+                        <td>Authors</td>
+                        <td>Hawon Woo, Rebecca Chase</td>
+                    </tr>
+                    <tr>
+                        <td>Pages</td>
+                        <td>500</td>
+                    </tr>
                 </table>
             </div>
             <div class="col-md-6">
                 <h2>Purchase Options</h2>
-                <table class="table table-bordered table-condensed table-responsive">
+                <table class="table table-bordered table-sm table-responsive">
                     <tr>
                         <th>Option</th>
                         <th>Quantity</th>
                         <th>Price</th>
                     </tr>
-                    <tr><td>New</td><td>10</td><td>$200</td></tr>
-                    <tr><td>Used</td><td>3</td><td>$100</td></tr>
-                    <tr><td>Digital</td><td>N/A</td><td>$100</td></tr>
+                    <tr>
+                        <td>New</td>
+                        <td>10</td>
+                        <td>$200</td>
+                    </tr>
+                    <tr>
+                        <td>Used</td>
+                        <td>3</td>
+                        <td>$100</td>
+                    </tr>
+                    <tr>
+                        <td>Digital</td>
+                        <td>N/A</td>
+                        <td>$100</td>
+                    </tr>
                 </table>
             </div>
         </div>
