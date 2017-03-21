@@ -1,6 +1,6 @@
 <!--PHP for Account Summary page -->
 <?php
-include_once "database.php";
+include_once "config/database.php";
 
 //globals variables
 $account_summary_info;
@@ -12,8 +12,8 @@ $successful_query = false;
 function loadInformation() {
     global $link;
 	//Queries to be called
-	$qryAccSummary = "SELECT FirstName, LastName, Address1, Address2, City, State, ZipCode, Email, PhoneNumber FROM Customers WHERE CustomerID=1";
-	$qryUserTransactions = "SELECT `Product Name`, Description, Price, TransactionID, `Timestamp`, `Status` FROM lightnsalesproc.products LEFT JOIN lightnsalesproc.transactions ON lightnsalesproc.products.ProductID=lightnsalesproc.transactions.ProductID WHERE CustomerID=1 ORDER BY lightnsalesproc.transactions.Timestamp DESC LIMIT 10";
+	$qryAccSummary = "SELECT FirstName, LastName, Address1, Address2, City, State, ZipCode, Email, PhoneNumber FROM Customers WHERE CustomerID=" . $_SESSION['id'];
+	$qryUserTransactions = "SELECT `Product Name`, Description, Price, TransactionID, `Timestamp`, `Status` FROM lightnsalesproc.products LEFT JOIN lightnsalesproc.transactions ON lightnsalesproc.products.ProductID=lightnsalesproc.transactions.ProductID WHERE CustomerID=" . $_SESSION['id'] . " ORDER BY lightnsalesproc.transactions.Timestamp DESC LIMIT 10";
 	//$qryPaymentInformation = "";
 
     //Querying

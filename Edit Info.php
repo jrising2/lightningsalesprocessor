@@ -1,10 +1,10 @@
 <?php
-include_once "database.php";
+include_once "config/database.php";
 $account_info;
 
 function loadFormInformation() {
     global $link;
-    $qryAccountInfo = "SELECT FirstName, LastName, Address1, Address2, City, State, ZipCode, Email FROM customers WHERE CustomerID=1";
+    $qryAccountInfo = "SELECT FirstName, LastName, Address1, Address2, City, State, ZipCode, Email FROM customers WHERE CustomerID=" . $_SESSION['id'];
     $GLOBALS['account_info'] = mysqli_query($link, $qryAccountInfo);
 }
 
