@@ -1,11 +1,23 @@
 <?php
 require_once('config/database.php');
 
+// Checks to see if the id is set
 if(isset($_GET["id"])){
-    $productID = $_GET["id"];
-    $query = "SELECT * FROM Products WHERE ProductID=\"".$productID."\"";
-    $result = $link->query($query);
-    $result = $result->fetch_assoc();
+    // if it is set, make sure it is an int to be more secure
+    if(is_int($_GET["id"])){
+        $productID = $_GET["id"];
+        $query = "SELECT * FROM Products WHERE ProductID=\"".$productID."\"";
+        $result = $link->query($query);
+        $result = $result->fetch_assoc();
+    }else{ // if it isn't a int, just display the product with productID of 1
+        $productID = 1;
+        $query = "SELECT * FROM Products WHERE ProductID=\"".$productID."\"";
+        $result = $link->query($query);
+        $result = $result->fetch_assoc();
+    }
+}else{
+    echo "<h1>Product does not exist, sorry!</h1>";
+    die();
 }
 
 ?>
