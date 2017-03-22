@@ -1,5 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
 <?php
 include_once "Edit Info.php";
 loadFormInformation();
@@ -13,8 +11,7 @@ include_once "includes/header.php";
             ?>
         </body>
         <!-- Main Body End -->
-<?
-include_once "includes/footer.php";
-?>
-
-</html>
+		
+<?php
+include_once "includes/footer.php"
+>

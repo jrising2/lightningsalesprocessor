@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <?php
 include_once "Account.php";
 loadInformation();
@@ -72,10 +71,7 @@ include_once "includes/header.php";
 		</div>
 	</div>
 </body>
-<!-- Main Body End -->
 
 <?
-include_once "includes/footer.php";
+include_once "footer.php";
 ?>
-
-</html>

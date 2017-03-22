@@ -2,7 +2,7 @@
 <?php
 include_once "config/database.php";
 
-//globals variables
+//global variables
 $account_summary_info;
 $transactions_info;
 $payment_info;
@@ -94,8 +94,8 @@ function fillTransactions() {
 EOD;
         echo($html);
 	}
+}
 function EditAccountSummary() {
 
-}
 }
 ?> 
