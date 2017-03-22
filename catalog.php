@@ -1,12 +1,12 @@
 <?php
+include('includes/header.php');
+require_once('config/database.php');
 $output = NULL;
 
 if(isset($_POST['submit'])){
-	$mysqli = NEW MySQLi("localhost", "root", "", "epiz_19723230_lightnsalesproc");
+	$search = $link->real_escape_string($_POST['search']);
 
-	$search = $mysqli->real_escape_string($_POST['search']);
-
-	$result = $mysqli->query("SELECT ProductName, Genre, ISBN FROM products WHERE ProductName LIKE '%$search%'");
+	$result = $link->query("SELECT ProductName, Genre, ISBN FROM Products WHERE ProductName LIKE '%$search%'");
 
 	if($result->num_rows > 0){
 		$rowCount = 0;
@@ -16,6 +16,7 @@ if(isset($_POST['submit'])){
 			$ProductName = $rows['ProductName'];
 			$Genre = $rows['Genre'];
 			$ISBN = $rows['ISBN'];
+            $Price = $rows['Price'];
 			
 			if($rowCount % 4 == 0){
 				$output .= "<tr>";
@@ -23,10 +24,11 @@ if(isset($_POST['submit'])){
 			}
 			
 			// Change ISBN to Price
-			$output .= "<td style='width:220px'><img src='http://placehold.it/200x200'><br><br>".
+			$output .= "<td style='width:220px'><img src='image/$ISBN.jpg'><br><br>".
 						"<strong>Name:</strong> $ProductName <br>".
 						"<strong>Genre:</strong> $Genre <br>".
-						"<strong>ISBN:</strong> $ISBN <br><br>".
+						"<strong>ISBN:</strong> $ISBN <br>".
+                        "<strong>Price:</strong> $Price <br><br>".
 						"</td>";
 						
 			if($colCount == 4){
@@ -41,12 +43,12 @@ if(isset($_POST['submit'])){
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-	<head></head>
-	
-	<body>
-	
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--	<head></head>-->
+<!--	-->
+<!--	<body>-->
+
 		<br />
 		<div style="text-align:center">
 			<form method="POST" action="catalog.php">
