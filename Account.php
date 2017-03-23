@@ -1,6 +1,7 @@
 <!--PHP for Account Summary page -->
 <?php
-include_once "config/database.php";
+include_once "includes/database.php";
+session_start();
 
 //global variables
 $account_summary_info;
@@ -12,8 +13,8 @@ $successful_query = false;
 function loadInformation() {
     global $link;
 	//Queries to be called
-	$qryAccSummary = "SELECT FirstName, LastName, Address1, Address2, City, State, ZipCode, Email, PhoneNumber FROM Customers WHERE CustomerID=" . $_SESSION['id'];
-	$qryUserTransactions = "SELECT `Product Name`, Description, Price, TransactionID, `Timestamp`, `Status` FROM lightnsalesproc.products LEFT JOIN lightnsalesproc.transactions ON lightnsalesproc.products.ProductID=lightnsalesproc.transactions.ProductID WHERE CustomerID=" . $_SESSION['id'] . " ORDER BY lightnsalesproc.transactions.Timestamp DESC LIMIT 10";
+	$qryAccSummary = "SELECT FirstName, LastName, Address1, Address2, City, State, ZipCode, Email FROM Customers WHERE CustomerID= {$_SESSION['id']}";
+	$qryUserTransactions = "SELECT ProductName, Description, Price, TransactionID, `Timestamp`, `Status` FROM Products LEFT JOIN Transactions ON Products.ProductID=Transactions.ProductID WHERE CustomerID= {$_SESSION['id']} ORDER BY Transactions.Timestamp DESC LIMIT 10";
 	//$qryPaymentInformation = "";
 
     //Querying
@@ -31,6 +32,7 @@ function conditionAddress($Address2) {
 }
 function fillAccountSummary() {
 	$row = mysqli_fetch_assoc($GLOBALS['account_summary_info']);
+	$num_rows = mysqli_num_rows($GLOBALS['account_summary_info']);
     $Address2 = conditionAddress($row['Address']);
 	$html = <<<EOD
     <table class="table table-bordered">
@@ -64,7 +66,7 @@ EOD;
 
 function fillTransactions() {
     $num_rows = mysqli_num_rows($GLOBALS['transactions_info']);
-	for ($i = 0; $i < 5; $i++) {
+	for ($i = 0; $i < $num_rows; $i++) {
 	$row = mysqli_fetch_assoc($GLOBALS['transactions_info']);
 	$html = <<<EOD
 	<div class="panel panel-default">
@@ -95,7 +97,31 @@ EOD;
         echo($html);
 	}
 }
-function EditAccountSummary() {
+
+function fillPaymentInfo() {
+	//$num_rows = mysqli_num_rows($GLOBALS['transactions_info']);
+	//for ($i = 0; $i < $num_rows; $i++) {
+	//$row = mysqli_fetch_assoc($GLOBALS['transactions_info']);
+	$html = <<<EOD
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<div class="row">
+				<div class="col-md-4">Name on the card</div>
+				<div class="col-md-6">Card Number</div>
+				<div class="col-md-2">Expiration Date</div>
+			</div>
+		</div>
+		<div class="panel-body">
+			Billing Address Name
+			<br>Billing Address Line 1
+			<br>Billing Address Line 2
+			<br>State, City, ZIP
+			<br>Country
+			<br>Phone number (XXX-XXX-XXXX)
+		</div>
+	</div>
+EOD;
 
 }
+
 ?> 
