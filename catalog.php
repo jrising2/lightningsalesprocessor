@@ -1,13 +1,19 @@
+<?php include('includes/header.php'); ?>
+	
+	<div style="text-align:center">
+		<form method="POST" action="catalog.php">
+			<input type="text" name="search" style="width:500px" />
+			<input type="submit" name="submit" value="Search" />
+		</form>
+	</div>
+	<hr />
+
 <?php
-include('includes/header.php');
 require_once('config/database.php');
-$output = "";
 
 if(isset($_POST['submit'])){
 	$search = $link->real_escape_string($_POST['search']);
-
-	$result = $link->query("SELECT ProductName, Genre, ISBN FROM Products WHERE ProductName LIKE '%$search%'");
-
+	$result = $link->query("SELECT ProductName, Genre, ISBN, Price FROM Products WHERE ProductName LIKE '%$search%'");
 	if($result->num_rows > 0){
 		$rowCount = 0;
 		$colCount = 0;
@@ -16,49 +22,30 @@ if(isset($_POST['submit'])){
 			$ProductName = $rows['ProductName'];
 			$Genre = $rows['Genre'];
 			$ISBN = $rows['ISBN'];
-            		$Price = $rows['Price'];
+            $Price = $rows['Price'];
 			
 			if($rowCount % 4 == 0){
-				$output .= "<tr>";
+				echo "<tr>";
 				$colCount = 1;
 			}
 			
-			// Change ISBN to Price
-			$output .= "<td style='width:220px'><img src='image/$ISBN.jpg'><br><br>".
+			echo "<td style='width:220px'><img src='image/$ISBN.jpg'><br><br>".
 						"<strong>Name:</strong> $ProductName <br>".
 						"<strong>Genre:</strong> $Genre <br>".
 						"<strong>ISBN:</strong> $ISBN <br>".
-                        			"<strong>Price:</strong> $Price <br><br>".
+                       	"<strong>Price:</strong> $Price <br><br>".
 						"</td>";
 						
 			if($colCount == 4){
-				$output .= "</tr>";
+				echo "</tr>";
 			}
 			$rowCount++; 
 			$colCount++;
 		}
+		echo '</table>';
 	}else{
-		$output = "No results were found.";
+		echo "<div style='text-align:center'>No results were found.</div>";
 	}
 }
+include('includes/footer.php'); 
 ?>
-
-<!--<!DOCTYPE html>-->
-<!--<html lang="en">-->
-<!--	<head></head>-->
-<!--	-->
-<!--	<body>-->
-
-		<br />
-		<div style="text-align:center">
-			<form method="POST" action="catalog.php">
-				<input type="text" name="search" style="width:500px" />
-				<input type="submit" name="submit" value="Search" />
-			</form>
-			<br />
-		</div>
-		<hr />
-		
-		<?php echo $output; ?>
-	</body>
-</html>
