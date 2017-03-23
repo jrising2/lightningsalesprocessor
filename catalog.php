@@ -1,7 +1,7 @@
 <?php
 include('includes/header.php');
 require_once('config/database.php');
-$output = NULL;
+$output = "";
 
 if(isset($_POST['submit'])){
 	$search = $link->real_escape_string($_POST['search']);
@@ -16,7 +16,7 @@ if(isset($_POST['submit'])){
 			$ProductName = $rows['ProductName'];
 			$Genre = $rows['Genre'];
 			$ISBN = $rows['ISBN'];
-            $Price = $rows['Price'];
+            		$Price = $rows['Price'];
 			
 			if($rowCount % 4 == 0){
 				$output .= "<tr>";
@@ -28,7 +28,7 @@ if(isset($_POST['submit'])){
 						"<strong>Name:</strong> $ProductName <br>".
 						"<strong>Genre:</strong> $Genre <br>".
 						"<strong>ISBN:</strong> $ISBN <br>".
-                        "<strong>Price:</strong> $Price <br><br>".
+                        			"<strong>Price:</strong> $Price <br><br>".
 						"</td>";
 						
 			if($colCount == 4){
@@ -60,6 +60,6 @@ if(isset($_POST['submit'])){
 		<hr />
 		
 		<?php echo $output; ?>
-		
+		<?php include('includes/footer.php'); ?>
 	</body>
 </html>
