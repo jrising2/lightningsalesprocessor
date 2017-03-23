@@ -60,6 +60,5 @@ if(isset($_POST['submit'])){
 		<hr />
 		
 		<?php echo $output; ?>
-		<?php include('includes/footer.php'); ?>
 	</body>
 </html>
