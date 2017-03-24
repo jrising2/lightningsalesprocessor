@@ -13,7 +13,8 @@ require_once('config/database.php');
 
 if(isset($_POST['submit'])){
 	$search = $link->real_escape_string($_POST['search']);
-	$result = $link->query("SELECT ProductName, Genre, ISBN, Price FROM Products WHERE ProductName LIKE '%$search%'");
+	$result = $link->query("SELECT ProductName, Genre, ISBN, Price FROM Products 
+		WHERE ProductName LIKE '%$search%' OR ISBN LIKE '%$search%'");
 	if($result->num_rows > 0){
 		$rowCount = 0;
 		$colCount = 0;
