@@ -17,7 +17,7 @@ if(isset($_POST['submit'])){
 	if($result->num_rows > 0){
 		$rowCount = 0;
 		$colCount = 0;
-		echo '<div class="row">';
+		echo '<div class="row" style="padding-left:125px">';
 		while($rows = $result->fetch_assoc()){
 			$ProductName = $rows['ProductName'];
 			$Genre = $rows['Genre'];
@@ -29,7 +29,7 @@ if(isset($_POST['submit'])){
 				$colCount = 1;
 			}
 		
-			echo "<div class='col-md-3' style='width:235px'><img src='image/$ISBN.jpg'><br><br>".
+			echo "<div class='col-md-3' style='width:250px'><img src='image/$ISBN.jpg'><br><br>".
 						"<strong>Name:</strong> $ProductName <br>".
 						"<strong>Genre:</strong> $Genre <br>".
 						"<strong>ISBN:</strong> $ISBN <br>".
@@ -42,7 +42,7 @@ if(isset($_POST['submit'])){
 			$rowCount++; 
 			$colCount++;
 		}
-		echo '</div>';
+		echo '</div></p>';
 	}else{
 		echo "<div style='text-align:center'>No results were found.</div>";
 	}
