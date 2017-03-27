@@ -10,7 +10,6 @@
 
 <?php
 require_once('config/database.php');
-
 if(isset($_POST['submit'])){
 	$search = $link->real_escape_string($_POST['search']);
 	$result = $link->query("SELECT ProductName, Genre, ISBN, Price FROM Products 
@@ -18,7 +17,7 @@ if(isset($_POST['submit'])){
 	if($result->num_rows > 0){
 		$rowCount = 0;
 		$colCount = 0;
-		echo '<table align="center"><tr>';
+		echo '<div class="row">';
 		while($rows = $result->fetch_assoc()){
 			$ProductName = $rows['ProductName'];
 			$Genre = $rows['Genre'];
@@ -26,24 +25,24 @@ if(isset($_POST['submit'])){
             $Price = $rows['Price'];
 			
 			if($rowCount % 4 == 0){
-				echo "<tr>";
+				echo '<div class="row">';
 				$colCount = 1;
 			}
-			
-			echo "<td style='width:220px'><img src='image/$ISBN.jpg'><br><br>".
+		
+			echo "<div class='col-md-3' style='width:235px'><img src='image/$ISBN.jpg'><br><br>".
 						"<strong>Name:</strong> $ProductName <br>".
 						"<strong>Genre:</strong> $Genre <br>".
 						"<strong>ISBN:</strong> $ISBN <br>".
                        	"<strong>Price:</strong> $Price <br><br>".
-						"</td>";
+						"</div>";
 						
 			if($colCount == 4){
-				echo "</tr>";
+				echo "</div>";
 			}
 			$rowCount++; 
 			$colCount++;
 		}
-		echo '</table>';
+		echo '</div>';
 	}else{
 		echo "<div style='text-align:center'>No results were found.</div>";
 	}
