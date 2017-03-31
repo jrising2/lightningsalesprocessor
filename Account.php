@@ -13,8 +13,8 @@ $successful_query = false;
 function loadInformation() {
     global $link;
 	//Queries to be called
-	$qryAccSummary = "SELECT FirstName, LastName, Address1, Address2, City, State, ZipCode, Email FROM Customers WHERE CustomerID= {$_SESSION['id']}";
-	$qryUserTransactions = "SELECT ProductName, Description, Price, TransactionID, `Timestamp`, `Status` FROM Products LEFT JOIN Transactions ON Products.ProductID=Transactions.ProductID WHERE CustomerID= {$_SESSION['id']} ORDER BY Transactions.Timestamp DESC LIMIT 10";
+	$qryAccSummary = "SELECT FirstName, LastName, Address1, Address2, City, State, ZipCode, Email FROM Customers WHERE CustomerID={$_SESSION['id']}";
+	$qryUserTransactions = "SELECT 'Product Name', Description, Price, TransactionID, `Timestamp`, `Status` FROM Products LEFT JOIN Transactions ON Products.ProductID=Transactions.ProductID WHERE CustomerID={$_SESSION['id']} ORDER BY Transactions.Timestamp DESC LIMIT 10";
 	//$qryPaymentInformation = "";
 
     //Querying
@@ -96,10 +96,13 @@ function fillTransactions() {
 EOD;
         echo($html);
 	}
+    if ($num_rows == 0) {
+        echo '<p>No Recent Transactions could be found</p>';
+    }
 }
 
 function fillPaymentInfo() {
-	//$num_rows = mysqli_num_rows($GLOBALS['transactions_info']);
+	$num_rows = mysqli_num_rows($GLOBALS['transactions_info']);
 	//for ($i = 0; $i < $num_rows; $i++) {
 	//$row = mysqli_fetch_assoc($GLOBALS['transactions_info']);
 	$html = <<<EOD
@@ -121,7 +124,9 @@ function fillPaymentInfo() {
 		</div>
 	</div>
 EOD;
-
+   if ($num_rows == 0) {
+        echo '<p>No payment information was found in our records.</p>';
+    }
 }
 
 ?> 
