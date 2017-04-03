@@ -20,6 +20,7 @@ $maxtid = $row["max"]; // Find max value of TransactionID
 $newtid = $maxtid + 1; // Increment above value by 1 and assign the value to $newtid
 
 $cid = $_SESSION["id"]; // CustomerID
+$gtotal = $_SESSION["total"]; // Grand Total
 
 // Create Transaction Data
 if(isset($_SESSION["cart"])){
@@ -28,8 +29,8 @@ if(isset($_SESSION["cart"])){
     $quantity = $item["quantity"];
     $price = $item["price"];
     $total = $price * $quantity;
-    $sql = "INSERT INTO Transactions (TransactionID,ProductID,CustomerID,Quantity)
-      VALUES ('$newtid','$pid','$cid','$quantity')";
+    $sql = "INSERT INTO Transactions (TransactionID,ProductID,CustomerID,Quantity,LineItemTotal,GrandTotal)
+      VALUES ('$newtid','$pid','$cid','$quantity','$total','$gtotal')";
     if (!mysqli_query($link, $sql)){
       error('A database write error occurred');
     }

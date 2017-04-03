@@ -54,6 +54,7 @@ include_once "includes/functions.php";
       		</div>
     </div>
         <?php
+        $_SESSION["total"] = $item_total;
       } else {
     echo "</div>";
       }
