@@ -3,6 +3,11 @@ include_once "../includes/database.php";
 include_once "../includes/functions.php";
 session_start();
 
+// Check for login status
+if (!isset($_SESSION["id"])){
+  error('You must be logged in to checkout');
+}
+
 // Manual increment of TransactionID
 $sql = "SELECT MAX(TransactionID) AS max FROM Transactions";
 $result = mysqli_query($link,$sql);
