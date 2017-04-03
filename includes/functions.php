@@ -25,12 +25,12 @@ function displayPrice($pid){
 }
 
 function error($msg) {
-    ?>
+    echo "
     <html>
     <head>
-    <script language="JavaScript">
+    <script language='JavaScript'>
     
-        alert("<?=$msg?>");
+        alert('$msg');
         history.back();
     
     </script>
@@ -38,7 +38,7 @@ function error($msg) {
     <body>
     </body>
     </html>
-    <?php
+    ";
     exit;
 }
 
