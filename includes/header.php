@@ -35,13 +35,13 @@ session_start();
                         <ul class="nav navbar-nav">
                             <?php
                             if(isset($_SESSION['id'])){
-                                echo "<li><a href='account.php'><span class='glyphicon glyphicon-user'></span> ".$_SESSION['name']."</a></li>";
-                                echo "<li><a href='logout.php'><span class='glyphicon glyphicon-log-out'></span> Logout</a></li>";
+                                echo "<li><a href='account.php'><span class='glyphicon glyphicon-user'></span> ".$_SESSION['fname']."</a></li>";
+                                echo "<li><a href='php/logout.php'><span class='glyphicon glyphicon-log-out'></span> Logout</a></li>";
                             } else {
                                 echo "<li><a href='login.php'><span class='glyphicon glyphicon-log-in'></span> Login</a></li>";
                             }
                             ?>
-                            <li><a href="#"><span class="glyphicon glyphicon-shopping-cart"></span> Shopping Cart</a></li>
+                            <li><a href="cart.php"><span class="glyphicon glyphicon-shopping-cart"></span> Shopping Cart</a></li>
                         </ul>
                     </div>
                 </nav>
@@ -79,10 +79,10 @@ session_start();
                     </div>
                     <div class="collapse navbar-collapse navbar-ex1-collapse">
                         <ul class="nav navbar-nav">
-                            <li class="active"><a href="#">Home</a></li>
-                            <li><a href="#">About Us</a></li>
-                            <li><a href="catalog.php">Books</a></li>
-                            <li><a href="#">Customer Service</a></li>
+                            <li <?php if (basename($_SERVER['PHP_SELF']) == 'index.php'){echo 'class="active"';} ?> ><a href="index.php">Home</a></li>
+                            <li <?php if (basename($_SERVER['PHP_SELF']) == 'about.php'){echo 'class="active"';} ?> ><a href="about.php">About Us</a></li>
+                            <li <?php if (basename($_SERVER['PHP_SELF']) == 'catalog.php'){echo 'class="active"';} ?> ><a href="catalog.php">Books</a></li>
+                            <li <?php if (basename($_SERVER['PHP_SELF']) == 'customer_service.php'){echo 'class="active"';} ?> ><a href="#">Customer Service</a></li>
                         </ul>
                     </div>
                 </nav>
