@@ -99,8 +99,8 @@ include_once "includes/functions.php";
           <h4>Delivery Method</h4>
           <div class="form-group tight-form-group">
               <label class="sr-only" for="name">Delivery Method</label>
-              <input type="radio" name="delivery" value="ship" checked="checked"> Ship to my address<br>
-              <input type="radio" name="delivery" value="pickup"> I will pickup my order at the store
+              <input type="radio" name="delivery" value="Shipping" checked="checked"> Ship to my address<br>
+              <input type="radio" name="delivery" value="Pickup"> I will pickup my order at the store
           </div>
           <button type="submit" class="btn btn-primary btn-block" style="width:100px">Purchase</button>
       </form>
