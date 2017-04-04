@@ -19,6 +19,7 @@ include_once "includes/header.php";
         <button type="submit" class="btn btn-primary btn-block" style="width:100px">Submit</button>
         <br>
         <p>Don't have an account already? <a href="register.php">Register</a> for one!</p>
+        <p>Forgot your password? <a href="reset.php">Reset</a> your password!</p>
       </form>
     </div>
   <div class="col-md-4"></div>

@@ -81,7 +81,7 @@ session_start();
                         <ul class="nav navbar-nav">
                             <li <?php if (basename($_SERVER['PHP_SELF']) == 'index.php'){echo 'class="active"';} ?> ><a href="index.php">Home</a></li>
                             <li <?php if (basename($_SERVER['PHP_SELF']) == 'about.php'){echo 'class="active"';} ?> ><a href="about.php">About Us</a></li>
-                            <li <?php if (basename($_SERVER['PHP_SELF']) == 'catalog.php'){echo 'class="active"';} ?> ><a href="catalog.php">Books</a></li>
+                            <li <?php if (basename($_SERVER['PHP_SELF']) == 'catalog.php'){echo 'class="active"';} ?> ><a href="catalog.php">Catalog</a></li>
                             <li <?php if (basename($_SERVER['PHP_SELF']) == 'customer_service.php'){echo 'class="active"';} ?> ><a href="#">Customer Service</a></li>
                         </ul>
                     </div>
