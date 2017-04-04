@@ -32,12 +32,13 @@ if (filter_var($email, FILTER_VALIDATE_EMAIL) != true) {
 //may have some redundancy checks if information is unchanged on commit (right now database isnt updated to represent phone and country)
 $updatecustomer = "UPDATE customers SET FirstName = '{$fname}', LastName = '{$lname}', Email = '{$email}', Address1 = '{$add1}', Address2 = '{$add2}', State = '{$state}', City = '{$city}', ZipCode = '{$zip}' WHERE CustomerID={$_SESSION['id']}";
 if (mysqli_query($link, $updatecustomer)) {
-    //succesfful entry
+    //successful entry
+    header("Location: account.php");
 }  else {
     //do some code for unsuccessful entry
 }
 
-header("Location: account.php");
+
 //unsuccesful commit some validation errors (will add validation later)
 
 ?>

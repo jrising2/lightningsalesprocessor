@@ -1,5 +1,5 @@
 <?php
-include_once "account process.php";
+include_once "account_process.php";
 loadInformation();
 include_once "includes/header.php";
 ?>
@@ -27,8 +27,8 @@ include_once "includes/header.php";
 						<?php
                         fillAccountSummary();
                         ?>
-						<a href="Edit Info Page.php"><button type="button" class="btn btn-primary btn-md pull-right">Edit</button></a>
-						<a href="Change Pass Page.php">Change password</a>
+						<a href="edit_info.php"><button type="button" class="btn btn-primary btn-md pull-right">Edit</button></a>
+						<a href="change_pass.php">Change password</a>
 					</div>
 					
 					<!-- Past/Current Transactions/Orders in the account page-->
@@ -44,7 +44,8 @@ include_once "includes/header.php";
                         <?php
                         fillPaymentInfo();
                         ?>
-						<button type="button" class="btn btn-primary btn-md pull-right">Edit</button>
+                        <!-- will eventually have an edit payment info-->
+						<a href="#"><button type="button" class="btn btn-primary btn-md pull-right">Edit</button></a>
 					</div>
 					
 					<div id="Admininstrative=" class="tab-pane fade">

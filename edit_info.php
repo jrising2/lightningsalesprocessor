@@ -9,7 +9,7 @@ $row = mysqli_fetch_assoc($account_info);
 ?>
         <div class="col-md-11">
             <h2>Edit Account Information</h2>
-            <form role="form" action="Edit Info.php" method="POST">
+            <form role="form" action="edit_info_process.php" method="POST">
                 <div class="form-group tight-form-group">
                     <div class="row">
                         <label for="fname" class="col-md-2 col-form-label">First Name</label>

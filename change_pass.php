@@ -4,11 +4,22 @@ include_once "includes/header.php";
 
         <!-- Main Body Start -->
         <body>
+            <?php
+            if (isset($_GET['error'])) {
+                $ERROR = $_GET['error'];
+            }
+            if ($ERROR == "1") {
+                echo  '<div class="alert alert-danger" role="alert">
+                <strong>Error: </strong>Passwords do not match.
+                </div>';
+            }
+            ?>
            <div class="row">
                 <div class="col-md-4"></div>
                     <div class="col-md-4">
                     <h2 align="center">Change Password</h2><br>
-                    <form role="form" action="Change Pass.php" method="POST">
+
+                    <form role="form" action="change_pass_process.php" method="POST">
                         <div class="form-group">
                             <label for="currentpass">Current Password</label>
                             <input type="password" class="form-control" name="currentpass">

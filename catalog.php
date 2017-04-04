@@ -21,7 +21,7 @@ include('includes/header.php');
         $offset = (((int) $page) - 1) * $maxItemCount;
 
         //Query for total number of results
-        $qry = "SELECT ProductID, ProductName, Author, Genre, ISBN, Stock, Price, Description FROM Products";
+        $qry = "SELECT ProductID, ProductName, Genre, ISBN, Stock, Price, Description FROM Products";
         if ($search != "") $qry = $qry . " WHERE ProductName LIKE '%{$search}%' OR ISBN LIKE '%{$search}%'";
         $total_results = mysqli_query($link, $qry);
         $totalItems = mysqli_num_rows($total_results);
@@ -39,7 +39,7 @@ include('includes/header.php');
     $rows = mysqli_fetch_all($result, MYSQLI_BOTH);
     $curPage_itemCount = mysqli_num_rows($result);
     ?>
-	<form role="form" method="POST" action="catalog process.php">
+	<form role="form" method="POST" action="catalog_process.php">
         <div class="form-group" role="search">
             <div class="col-md-2"></div>
             <div class="col-md-8">
@@ -82,9 +82,8 @@ include('includes/header.php');
         }
         // Change ISBN to Price
         //Just a note image/placeholder.jpg will eventually have a reference which grabs the link to the image
-       echo "<div class='col-md-3' style='width:250px'><a href='productpage.php?id={$row['ProductID']}'><img src='image/{$row['ISBN']}.jpg' alt='Insert Image here' width='150' height='150'></a><br><br>".
+       echo "<div class='col-md-3' style='width:250px'><a href='productpage.php?id={$row['ProductID']}'><img src='image/placeholder.jpg' alt='Insert Image here' width='150' height='150'></a><br><br>".
                         "<strong>Title:</strong> {$row['ProductName']} <br>".
-						"<strong>Author:</strong> {$row['Author']} <br>".
                         "<strong>Genre:</strong> {$row['Genre']} <br>".
                         "<strong>ISBN:</strong> {$row['ISBN']} <br>".
                        	"<strong>Price:</strong> $" . "{$row['Price']} <br><br>".

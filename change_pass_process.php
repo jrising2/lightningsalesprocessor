@@ -16,23 +16,18 @@ $dbpass = $row['Password'];
 if ($dbpass == $currentpass) {
     if ($newpass == $newpass2) {
         //succesfull password change
-        $changepass = "UPDATE Customers SET Password = {$newpass} WHERE CustomerID= {$_SESSION['id']}";
+        $updatepass = $link->real_escape_string($newpass);
+        $changepass = "UPDATE Customers SET Password = '{$updatepass}' WHERE CustomerID= {$_SESSION['id']}";
         mysqli_query($link, $changepass);
-        header("Location: ./account.php");
+        header("Location: account.php");
     } else {
         //unsuccesful password change
-        header("Location: Change Pass Page.php");
-        $message = "The passwords did not match!";
-        echo "<script type='text/javascript'>alert('$message');</script>";
-        exit();
+        header("Location: change_pass.php?error=1");
         //for now just redirects back to change password page
         //later may regenerate the code for the change password page with some sort of bolded indication instead of a javascript message
     }
 }else {
-     header("Location: Change Pass Page.php");
-     $message = "The passwords did not match!";
-     echo "<script type='text/javascript'>alert('$message');</script>";
-     exit();
+     header("Location: change_pass.php?error=1");
 }
 
 
