@@ -90,7 +90,7 @@ EOD;
     					<div class="row">
     						<div class ="col-md-2"><p>Price<br>$ {$row['Price']}</p></div>
     						<div class="col-md-2"> <p>Quantity<br>x{$row['Quantity']}</p></div>
-    						<div class="col-md-2"> <p>Total<br>${$row['LineItemTotal']}</p></div>
+    						<div class="col-md-2"> <p>Total<br>$ {$row['LineItemTotal']}</p></div>
     						<div class ="col-md-2"><p>Status<br>{$row['Status']}</p></div>
     					</div>
     					<div class="row">

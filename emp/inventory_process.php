@@ -5,9 +5,10 @@ global $link;
 $search = $link->real_escape_string($_POST['searchinventory']);
 $filter = $_POST['filters'];
 $order = $_POST['order'];
-$link = "Inventory.php?search={$search}";
+$link = "inventory.php?search={$search}";
 if ($filter != "") $link = $link . "&filter={$filter}";
 if ($order != "") $link = $link . "&order={$order}";
 $link = $link . "&page=1";
+echo $link;
 header("Location: {$link}");
 ?>
