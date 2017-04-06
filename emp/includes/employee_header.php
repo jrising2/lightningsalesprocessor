@@ -1,5 +1,19 @@
 <?php
 session_start();
+
+function managerMenu($eid){
+    $link = mysqli_connect('sql212.epizy.com', 'epiz_19723230', 'icebreaker', 'epiz_19723230_lightnsalesproc') 
+        or die("Connection to database could not be established");
+    $sql = "SELECT Role FROM Employees WHERE EmployeeID = $eid";
+    $result = mysqli_query($link,$sql);
+    $row = mysqli_fetch_assoc($result);
+    $role = $row["Role"];
+    if ($role == 1){
+        $active = "";
+        if (basename($_SERVER['PHP_SELF']) == 'editemployee.php'){$active = "class='active'";}
+        echo "<li ".$active." ><a href='editemployee.php'>Manage Employees</a></li>";
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -66,6 +80,7 @@ session_start();
                             <li <?php if (basename($_SERVER['PHP_SELF']) == 'orders.php'){echo 'class="active"';} ?> ><a href="orders.php">Orders</a></li>
                             <li <?php if (basename($_SERVER['PHP_SELF']) == 'inventory.php'){echo 'class="active"';} ?> ><a href="inventory.php">Inventory</a></li>
                             <li <?php if (basename($_SERVER['PHP_SELF']) == 'printables.php'){echo 'class="active"';} ?> ><a href="printables.php">Generate Printables</a></li>
+                            <?php if(isset($_SESSION['eid'])){managerMenu($_SESSION['eid']);} ?>
                     </div>
                 </nav>
             </div>
