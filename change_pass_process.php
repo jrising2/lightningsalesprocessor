@@ -17,12 +17,8 @@ if ($dbpass == $currentpass) {
     if ($newpass == $newpass2) {
         //succesfull password change
         $updatepass = $link->real_escape_string($newpass);
-<<<<<<< HEAD
         $updatepass = md5($updatepass); // hash password
-        $changepass = "UPDATE Customers SET Password = '{$updatepass}' WHERE CustomerID= {$_SESSION['id']}";
-=======
-        $changepass = "UPDATE Customers SET Password = '{$updatepass}' WHERE CustomerID={$_SESSION['id']}";
->>>>>>> origin/master
+        $changepass = "UPDATE Customers SET Password = '{$updatepass}' WHERE CustomerID = {$_SESSION['id']}";
         mysqli_query($link, $changepass);
         header("Location: account.php");
     } else {
@@ -34,7 +30,5 @@ if ($dbpass == $currentpass) {
 }else {
      header("Location: change_pass.php?error=1");
 }
-
-
 
 ?>
