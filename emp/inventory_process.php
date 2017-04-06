@@ -1,5 +1,5 @@
 <?php
-require("includes/database.php");
+include "../includes/database.php";
 global $link;
 //if search occured redirect to the proper page
 $search = $link->real_escape_string($_POST['searchinventory']);

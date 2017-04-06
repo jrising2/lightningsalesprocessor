@@ -1,5 +1,5 @@
 <?php
-include "includes/database.php";
+include "../includes/database.php";
 include "includes/employee_header.php";
 ?>
 
@@ -13,6 +13,12 @@ include "includes/employee_header.php";
             $maxItemCount = 50; //maximum number of items to be displayed in a page
             $totalPages; //Total number of pages given the current search qry
 
+            //Get current employee role
+            $ROLE = "BookSeller"; //bydefault
+            $temp = mysqli_query($link, "SELECT Role FROM Employees WHERE EmployeeID={$_SESSION['ID']}");
+            if (mysqli_num_rows($temp) > 0) {
+                $ROLE = $temp['Role'];
+            }
 
             //Get information from super globals
             $page = (!isset($_GET['page']))? 1 : $_GET['page'];
@@ -149,26 +155,26 @@ include "includes/employee_header.php";
                         }
                         $row = $rows[$count];
                         echo "<a href='managebooks.php?product={$row['ProductID']}' class='list-group-item'>
-                                <div class='row'>
-                                    <div class='col-md-2'>
-                                        <p>{$row['ProductID']}</p>
-                                    </div>
-                                    <div class='col-md-2'>
-                                        <p>{$row['ProductName']}</p>
-                                    </div>
-                                    <div class='col-md-2'>
-                                        <p>{$row['Genre']}</p>
-                                    </div>
-                                    <div class='col-md-2'>
-                                        <p>{$row['ISBN']}</p>
-                                    </div>
-                                    <div class='col-md-2'>
-                                        <p>x{$row['Stock']}</p>
-                                    </div>
-                                </div>
-                            </a>";
-                            $count++;
-                    }
+    					<div class='row'>
+    						<div class='col-md-2'>
+    							<p>{$row['ProductID']}</p>
+    						</div>
+    						<div class='col-md-2'>
+    							<p>{$row['ProductName']}</p>
+    						</div>
+    						<div class='col-md-2'>
+    							<p>{$row['Genre']}</p>
+    						</div>
+    						<div class='col-md-2'>
+    							<p>{$row['ISBN']}</p>
+    						</div>
+    						<div class='col-md-2'>
+    							<p>x{$row['Stock']}</p>
+    						</div>
+    					</div>
+    				</a>";
+                    $count++;
+                }
                     ?>
                 </div>
             </div>
@@ -212,5 +218,6 @@ include "includes/employee_header.php";
         echo '</ul>';
         ?>
         <!--This closes the employee header-->
-        </div>
-</body>
+<?php
+include('includes/footer_empty.php');
+?>>

@@ -1,7 +1,6 @@
 <?php
 include_once "includes/header.php";
 include_once "includes/database.php";
-
 global $link;
 $qryAccountInfo = "SELECT FirstName, LastName, Address1, Address2, City, State, ZipCode, Email FROM Customers WHERE CustomerID={$_SESSION['id']}";
 $account_info = mysqli_query($link, $qryAccountInfo);
@@ -70,7 +69,7 @@ $row = mysqli_fetch_assoc($account_info);
                     </div>
                 </div>
 
-                <div class="row" style="padding-top:20px">
+                <div class="row" style="padding-top:20px;padding-bottom:20px">
                     <div class="form-group tight-form-group">
                         <label for="city" class="col-md-2 col-form-label">City</label>
                         <div class="col-md-2">
@@ -80,10 +79,18 @@ $row = mysqli_fetch_assoc($account_info);
                         </div>
                         <label for="state" class="col-md-2 col-form-label">State</label>
                         <div class="col-md-2">
-                            <select type="text" class="form-control" id="state">
-                               <?php
-                               //to put some php generatable code for the state population
-                               ?>
+                            <select type="text" class="form-control" name="state">
+                                <?php
+                                    $st = array("Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "District of Columbia", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming");
+									for ($i = 0; $i < 50; $i++) {
+                                        if (strtolower($st[$i]) == strtolower($row['State'])) {
+											echo '<p>should be selected';
+                                            echo "<option value=" . $st[$i] . " selected>" . $st[$i] . "</option>";
+                                        } else {
+                                            echo "<option value=" . $st[$i] . ">" . $st[$i] . "</option>";
+                                        }
+                                    }
+                                ?>
                             </select>
                         </div>
                         <label for="zip" class="col-md-2 col-form-label">Zip Code</label>
@@ -95,7 +102,8 @@ $row = mysqli_fetch_assoc($account_info);
                     </div>
                 </div>
 
-                <div class="row" style="padding-top:20px;padding-bottom:20px">
+                <!--Assuming U.S by default-->
+                <!--<div class="row" style="padding-top:20px;padding-bottom:20px">
                     <div class="form-group tight-form-group">
                         <label for="country" class="col-md-2 col-form-label">Country</label>
                         <div class="col-md-4">
@@ -106,7 +114,7 @@ $row = mysqli_fetch_assoc($account_info);
                             </select>
                         </div>
                     </div>
-                </div>
+                </div>-->
 
                 <div align="right"><button type="submit" class="btn btn-primary btn-block" style="width:150px">Confirm Changes</button></div>
             </div>
