@@ -1,5 +1,5 @@
 <?php
-include "includes/database.php";
+include "../includes/database.php";
 include "includes/employee_header.php";
 ?>
 
@@ -13,6 +13,12 @@ include "includes/employee_header.php";
             $maxItemCount = 50; //maximum number of items to be displayed in a page
             $totalPages; //Total number of pages given the current search qry
 
+            //Get current employee role
+            $ROLE = "BookSeller"; //bydefault
+            $temp = mysqli_query($link, "SELECT Role FROM Employees WHERE EmployeeID={$_SESSION['ID']}");
+            if (mysqli_num_rows($temp) > 0) {
+                $ROLE = $temp['Role'];
+            }
 
             //Get information from super globals
             $page = (!isset($_GET['page']))? 1 : $_GET['page'];
@@ -40,9 +46,9 @@ include "includes/employee_header.php";
             //check order
             $myOrder = $_GET['order'];
             if ($myOrder == 'SLH') {
-                $qry = $qry . " ORDER BY Stock ASC";
+                if ($myfilter != '3') $qry = $qry . " ORDER BY Stock ASC";
             } else if ($myOrder == 'SHL') {
-                 $qry = $qry . " ORDER BY Stock DESC";
+                 if ($myfilter != '3') $qry = $qry . " ORDER BY Stock DESC";
             } else if ($myOrder == 'GAZ') {
                 $qry = $qry . " ORDER BY Genre ASC";
             } else if ($myOrder == 'GZA') {
@@ -74,15 +80,29 @@ include "includes/employee_header.php";
         ?>
         <div class="row">
         <form role="form" method="POST" action="inventory_process.php">
-            <div class="form-group" role="search">
+            <div class="form-group tight-form-group" role="search">
                 <div class="col-md-8">
                     <div class="input-group dropdown" style="padding-bottom:30px">
                         <div class="input-group-addon">
                             <select class="custom-select" name="filters">
-                                <option value="">Search Filter</option>
-                                <option value="1">Genre</option>
-                                <option value="2">Author</option>
-                                <option value="3">Stock</option>
+                                <?php
+                                echo '<option value="">Search Filter</option>';
+                                if ($myfilter == '1') {
+                                    echo '<option value="1" selected>Genre</option>';
+                                } else {
+                                    echo '<option value="1">Genre</option>';
+                                }
+                                if ($myfilter == '2') {
+                                    echo '<option value="2" selected>Author</option>';
+                                }else {
+                                   echo '<option value="2">Author</option>';
+                                }
+                                if ($myfilter == '3') {
+                                     echo '<option value="3" selected>Stock</option>';
+                                } else{
+                                    echo '<option value="3">Stock</option>';
+                                }
+                                ?>
                             </select>
                         </div>
                         <label class="sr-only" for="searchinventory">Search</label>
@@ -101,15 +121,49 @@ include "includes/employee_header.php";
                 <label for="order" class="col-md-2 col-form-label">Search Order</label>
                 <div class="col-md-2" style="padding-bottom:30px">
                     <select type="text" class="col-md-2 form-control" name="order">
-                         <option value=""></option>
-                         <option value="TAS">Product Name: A - Z</option>
-                         <option value="TDS">Product Name: Z - A</option>
-                         <option value="SLH">Stock: Low to High</option>
-                         <option value="SHL">Stock: High to Low</option>
-                         <option value="GAZ">Genre: A - Z</option>
-                         <option value="GZA">Genre: Z - A</option>
-                         <option value="IAS">ISBN: Ascending</option>
-                         <option value="IDS">ISBN: Descending</option>
+                        <?php
+                         echo '<option value=""></option>';
+                         if ($myOrder == 'TAS') {
+                            echo '<option value="TAS">Book Title: A-Z</option>';
+                         } else {
+                             echo '<option value="TAS" selected>Book Title: A-Z</option>';
+                         }
+                         if ($myOrder == 'TDS') {
+                            echo '<option value="TDS" selected>Book Title: Z-A</option>';
+                         } else {
+                              echo '<option value="TDS">Book Title: Z-A</option>';
+                         }
+                         if ($myOrder == 'SLH') {
+                            echo '<option value="SLH" selected>Stock: Low to High</option>';
+                         }else {
+                             echo '<option value="SLH">Stock: Low to High</option>';
+                         }
+                         if ($myOrder =='SHL') {
+                            echo '<option value="SHL"selected>Stock: High to Low</option>';
+                         } else {
+                             echo '<option value="SHL">Stock: High to Low</option>';
+                         }
+                         if ($myOrder == 'GAZ') {
+                            echo '<option value="GAZ"selected>Genre: A - Z</option>';
+                         }else{
+                            echo '<option value="GAZ">Genre: A - Z</option>';
+                         }
+                         if ($myOrder == 'GZA') {
+                            echo '<option value="GZA" selected>Genre: Z - A</option>';
+                         }else {
+                            echo '<option value="GZA">Genre: Z - A</option>';
+                         }
+                         if ($myOrder == 'IAS') {
+                            echo '<option value="IAS" selected>ISBN: Ascending</option>';
+                         }else {
+                            echo '<option value="IAS">ISBN: Ascending</option>';
+                         }
+                         if ($myOrder == 'IDS') {
+                            echo '<option value="IDS" selected>ISBN: Descending</option>';
+                         }else {
+                            echo '<option value="IDS">ISBN: Descending</option>';
+                         }
+                         ?>
                     </select>
                 </div>
             </div>
@@ -149,26 +203,26 @@ include "includes/employee_header.php";
                         }
                         $row = $rows[$count];
                         echo "<a href='managebooks.php?product={$row['ProductID']}' class='list-group-item'>
-                                <div class='row'>
-                                    <div class='col-md-2'>
-                                        <p>{$row['ProductID']}</p>
-                                    </div>
-                                    <div class='col-md-2'>
-                                        <p>{$row['ProductName']}</p>
-                                    </div>
-                                    <div class='col-md-2'>
-                                        <p>{$row['Genre']}</p>
-                                    </div>
-                                    <div class='col-md-2'>
-                                        <p>{$row['ISBN']}</p>
-                                    </div>
-                                    <div class='col-md-2'>
-                                        <p>x{$row['Stock']}</p>
-                                    </div>
-                                </div>
-                            </a>";
-                            $count++;
-                    }
+    					<div class='row'>
+    						<div class='col-md-2'>
+    							<p>{$row['ProductID']}</p>
+    						</div>
+    						<div class='col-md-2'>
+    							<p>{$row['ProductName']}</p>
+    						</div>
+    						<div class='col-md-2'>
+    							<p>{$row['Genre']}</p>
+    						</div>
+    						<div class='col-md-2'>
+    							<p>{$row['ISBN']}</p>
+    						</div>
+    						<div class='col-md-2'>
+    							<p>x{$row['Stock']}</p>
+    						</div>
+    					</div>
+    				</a>";
+                    $count++;
+                }
                     ?>
                 </div>
             </div>
@@ -212,5 +266,6 @@ include "includes/employee_header.php";
         echo '</ul>';
         ?>
         <!--This closes the employee header-->
-        </div>
-</body>
+<?php
+include('includes/footer_empty.php');
+?>>

@@ -1,5 +1,5 @@
 <?php
-require("includes/database.php");
+include "../includes/database.php";
 
 //Edits a record or adds a record to the database
 function edit_add() {
@@ -91,14 +91,14 @@ function confirm_delete() {
    }
 }
 
-if (isset($_GET['edit_add'])) {
+if (isset($_POST['edit_add'])) {
     edit_add();
     uploadImage();
-} else if (isset($_GET['id_lookup'])) {
+} else if (isset($_POST['id_lookup'])) {
     id_lookup();
-} else if (isset($_GET['get_to_delete'])) {
+} else if (isset($_POST['get_to_delete'])) {
     get_to_delete();
-} else if (isset($_GET['confirm_delete'])) {
+} else if (isset($_POST['confirm_delete'])) {
     confirm_delete();
 }
 ?>

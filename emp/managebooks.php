@@ -1,6 +1,6 @@
 <?php
-include('includes/database.php');
-include('includes/employee_header.php');
+include "../includes/database.php";
+include "includes/employee_header.php";
 ?>
         <!--Main body to seperate employee_header-->
         <!-- As stated on the edit_employee_info page, this page is setup the same,
@@ -211,5 +211,6 @@ include('includes/employee_header.php');
         <!-- Main Body End -->
 
         <!--This closes the employee header-->
-        </div>
-</body>
+<?php
+include('includes/footer_empty.php');
+?>
