@@ -27,8 +27,6 @@ if (isset($_SESSION['id'])){
 // no matching data was found
 if (mysqli_num_rows($result) == 0) {
   unset($_SESSION['id']);
-  unset($_SESSION['id']);
-  error("Your email or password is incorrect");	
-	exit;
+  error("Your email or password is incorrect");
 }
 ?>

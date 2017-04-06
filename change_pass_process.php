@@ -7,7 +7,7 @@ global $link;
 $qry = "SELECT Password FROM Customers WHERE CustomerID= {$_SESSION['id']}";
 $result = mysqli_query($link, $qry);
 $row = mysqli_fetch_assoc($result);
-$currentpass = $_POST['currentpass'];
+$currentpass = md5($_POST['currentpass']);
 $newpass = $_POST['newpass'];
 $newpass2 = $_POST['newpass2'];
 $dbpass = $row['Password'];
@@ -17,6 +17,7 @@ if ($dbpass == $currentpass) {
     if ($newpass == $newpass2) {
         //succesfull password change
         $updatepass = $link->real_escape_string($newpass);
+        $updatepass = md5($updatepass); // hash password
         $changepass = "UPDATE Customers SET Password = '{$updatepass}' WHERE CustomerID= {$_SESSION['id']}";
         mysqli_query($link, $changepass);
         header("Location: account.php");
