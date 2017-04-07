@@ -16,19 +16,17 @@ function edit_add() {
     $qry;
     //check if the product exist in the database already
     $result = mysqli_query($link, "SELECT ProductID FROM Products WHERE ProductID={$pid}");
-    echo mysqli_num_rows($result);
     if(mysqli_num_rows($result) > 0) {
         $qry = "UPDATE Products SET ProductID = {$pid}, ProductName = '{$pname}', ISBN = '{$isbn}', Stock = {$stock} WHERE ProductID={$pid}";
     }else {
         $qry = "INSERT INTO Products(ProductID, ProductName, ISBN, Stock) VALUES ({$pid}, '{$pname}', '{$isbn}', {$stock})";
     }
-    echo $qry;
     //execute either an update or an insert depending on above result
     if (mysqli_query($link, $qry)) {
         //successful insert
         if (mysqli_num_rows($result) > 0) {
             //succesful update
-            header("Location: managebooks.php?product={$pid}&redirect_success=1");
+            //move to next part where we upload the file to the server
         }else {
             //succesful insert
             header("Location: managebooks.php?product={$pid}&redirect_success=2");
@@ -39,27 +37,38 @@ function edit_add() {
     }
 }
 function uploadImage() {
-    /*global $link;
+    global $link;
+    //get some product information
     $pid= $link->real_escape_string($_POST['prodid']);
-    $localpath = $_POST['upload'];
-    $remotepath = "/htdocs/image/" . $file;
+    $isbn = $link->real_escape_string($_POST['isbn']);
+    if (isset($_FILES['userfile']['name'])) {
 
-    // set up basic connection
-    $conn_id = ftp_connect("ftp.epizy.com");
-
-    // login with username and password
-    $login_result = ftp_login($conn_id, "epiz_19723230", "icebreaker");
-
-    // upload a file
-    if (ftp_put($conn_id, $remotepath, $localpath, FTP_ASCII)) {
-        header("Location: managebooks.php?product={$pid}&redirect_success=1");
-    } else {
-        header("Location: managebooks.php?product={$pid}&error=5");
+    }else {
+        //if no file is specified leave method and update the rest
+        return;
     }
+    $localpath = $_FILES['userfile']['tmp_name']; //local file path
+    $remotepath = "/htdocs/image/" . $isbn . ".jpg";
 
-    // close the connection
-    ftp_close($conn_id);*/
+    // set up basic connection and login with username and password
+    $conn_id = ftp_connect("ftp.epizy.com") or die ("could not connecet to $ftp_password");
+    if(ftp_login($conn_id, "epiz_19723230", "icebreaker")) {
+        // upload a file
+        if (ftp_put($conn_id, $remotepath, $localpath, FTP_BINARY)) {
+            ftp_close($conn_id);
+            header("Location: managebooks.php?product={$pid}&redirect_success=1");
+        } else {
+            //error occured while uploading
+            ftp_close($conn_id);
+            header("Location: managebooks.php?product={$pid}&error=5");
+        }
+    } else {
+        //system error failed to connect
+        ftp_close($conn_id);
+        header("Location: managebooks.php?product={$pid}&error=6");
+    }
 }
+
 //allow the user to enter an id and select a product
 function id_lookup() {
     global $link;
@@ -72,6 +81,7 @@ function confirm_delete() {
     //if true no product was selected when the delete button was pressed
     $id = $_POST['confirm_delete'];
     if ($id == "") header("Location: managebooks.php?product=&error=2");
+
     //Because of the foreign key constraint we have to delete all transactions with said product ID before deleting the product
     //So we should probably remove the option to delete and have something like a boolean active/inactive products
     $qry = "DELETE FROM Transactions WHERE ProductID={$id}";

@@ -1,5 +1,6 @@
 <?php
 include_once "includes/database.php";
+include_once "includes/validation.php";
 
 //this form still needs a lot of error checking/validation
 global $link;
@@ -12,22 +13,10 @@ $state = $link->real_escape_string($_POST['state']);
 $city = $link->real_escape_string($_POST['city']);
 $zip = $link->real_escape_string($_POST['zip']);
 
-//$phone = $POST['phone'];
-//$country = $POST['country'];
-
-//validate all the edits here //May or may not fix validation due to time constraints
-/*$nameValidation = '[\d\s!@#$%^&*()_-+={}\[\]\|\\;:\'"<>,.?/`~]*'; //Negative matcher for not being digit, whitespace, or special characters
-if (preg_match($fname, $nameValidation) == true) {
-    header("Location: Edit Info Page.php"); //invalid fname return to edit page
-}
-if (preg_match($lname, $nameValidation) == true) {
-    header("Location: Edit Info Page.php"); //invalid lname return to edit page
-}
-//$emailValidation = '[A-Za-z0-9]+@{1}[A-Za-z]{2,}.?[A-Za-z]*'; //assuming only english domains
-if (filter_var($email, FILTER_VALIDATE_EMAIL) != true) {
-    header("Location: Edit Info Page.php"); //invalid email return to edit page
-}*/
-//to validate address will probably request from the google api
+if (validateName($fname)) header("Location: edit_info.php?error=1"); //illegal characters in first name
+if (validateName($lname)) header("Location: edit_info.php?error=2"); //illegal characters in last name
+if (validateEmail($email)) header("Location: edit_info.php?error=3"); //invalid email
+if (validateAddress($add1, $add2, $state, $city, $zip)) header("Location: edit_info.php?error=4");  //invalid address
 
 
 //may have some redundancy checks if information is unchanged on commit (right now database isnt updated to represent phone and country)
@@ -38,7 +27,7 @@ if (mysqli_query($link, $updatecustomer)) {
 }  else {
     //do some code for unsuccessful entry
     echo $updatecustomer;
-    //header("Location: edit_info.php?error=1");
+    header("Location: edit_info.php?error=5");
 }
 
 

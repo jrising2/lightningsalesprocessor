@@ -1,5 +1,10 @@
 <?php
 include_once "includes/header.php";
+
+//Check if the person is logged in before allowing page access
+if (isset($_SESSION['id']) == false) {
+	header("Location: login.php");
+}
 ?>
 
         <!-- Main Body Start -->

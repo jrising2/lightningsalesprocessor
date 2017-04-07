@@ -1,10 +1,44 @@
 <?php
 include_once "includes/header.php";
 include_once "includes/database.php";
+
+//Check if the person is logged in before allowing page access
+if (isset($_SESSION['id']) == false) {
+	header("Location: login.php");
+}
+
 global $link;
+
 $qryAccountInfo = "SELECT FirstName, LastName, Address1, Address2, City, State, ZipCode, Email FROM Customers WHERE CustomerID={$_SESSION['id']}";
 $account_info = mysqli_query($link, $qryAccountInfo);
 $row = mysqli_fetch_assoc($account_info);
+
+$ERROR;
+if (isset($_GET['error'])) {
+    $ERROR = $_GET['error'];
+}
+
+if ($ERROR == "1"){
+    echo  '<div class="alert alert-danger" role="alert">
+            <strong>Error: </strong>Illegal Characters in field: First Name.
+        </div>';
+}else if ($ERROR == "2") {
+     echo  '<div class="alert alert-warning" role="alert">
+            <strong>Error: </strong>Illegal Characters in field: Last Name.
+        </div>';
+} else if ($ERROR =="3"){
+    echo '<div class="alert alert-danger" role="alert">
+            <strong>Error: </strong>Invalid email address entered.
+        </div>';
+} else if ($ERROR == "4"){
+      echo '<div class="alert alert-warning" role="alert">
+            <strong>Error: </strong>Invalid Address Entered.
+        </div>';
+} else if ($ERROR == "5"){
+    echo '<div class="alert alert-danger" role="alert">
+                <strong>System Error: </strong> Error occured while attemping to commit changes.
+        </div>';
+}
 ?>
         <div class="col-md-11">
             <h2>Edit Account Information</h2>
@@ -100,21 +134,6 @@ $row = mysqli_fetch_assoc($account_info);
                         </div>
                     </div>
                 </div>
-
-                <!--Assuming U.S by default-->
-                <!--<div class="row" style="padding-top:20px;padding-bottom:20px">
-                    <div class="form-group tight-form-group">
-                        <label for="country" class="col-md-2 col-form-label">Country</label>
-                        <div class="col-md-4">
-                            <select type="text" class="form-control" id="country">
-                                <?php
-                                //to put some php generatable code for the state population
-                                ?>
-                            </select>
-                        </div>
-                    </div>
-                </div>-->
-
                 <div align="right"><button type="submit" class="btn btn-primary btn-block" style="width:150px">Confirm Changes</button></div>
             </div>
         </form>

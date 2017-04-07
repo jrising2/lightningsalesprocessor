@@ -5,8 +5,26 @@ include "includes/employee_header.php";
         <!--Main body to seperate employee_header-->
         <!-- As stated on the edit_employee_info page, this page is setup the same,
         with the exception of names being slightly different. -->
+
         <?php
-            //database  link
+		//Check if the person is logged in before allowing page access
+		if (isset($_SESSION['eid']) == false) {
+			header("Location: index.php");
+		}
+        //Get current employee role
+        $ROLE;
+        $temp = mysqli_query($link, "SELECT Role FROM Employees WHERE EmployeeID={$_SESSION['eid']}");
+        if (mysqli_num_rows($temp) > 0) {
+            $r = mysqli_fetch_assoc($temp);
+            $ROLE = $r['Role'];
+        }
+		//check if the current employee has priviledges to access the page
+		if (($ROLE == '1') || ($ROLE == '2')) {
+		}else{
+			header("Location: tracking.php");
+		}
+		
+        //database  link
         global $link;
         //ManageBooks Globals
         $qry; //current search qry by default will qry all items
@@ -51,6 +69,10 @@ include "includes/employee_header.php";
             echo '<div class="alert alert-danger" role="alert">
                         <strong>System Error: </strong> Error occured while uploading file to the server.
                 </div>';
+        } else if ($ERROR == "6"){
+            echo '<div class="alert alert-danger" role="alert">
+                        <strong>System Error: </strong> Failure to connect to the server when attempting to upload file.
+                </div>';
         }
         //if redirected look for successful edit or deletes
         if ($SUCCESS == 1) {
@@ -74,7 +96,7 @@ include "includes/employee_header.php";
             </div>
         </div>
 
-        <form method="POST" action="managebooks_process.php">
+        <form enctype="multipart/form-data" action="managebooks_process.php" method="POST">
             <div class="row">
                 <div class="col-md-3">
                     <div class="form-group">
@@ -134,15 +156,16 @@ include "includes/employee_header.php";
                 <div class="col-md-6">
                     <div class="form form-group">
                         <label for="upload">Upload Image File:</label>
+                        <input type="hidden" name="MAX_FILE_SIZE" value="204800" />
                         <input type="text" class="form-control" name="upload" id="upload" style="width:400px">
-                        <input type="file" id="getUpload" onchange="getFile()" accept="image/*" style="display: none;">
+                        <input type="file" id="userfile" name="userfile" onchange="getFile()" accept="image/*" style="display: none;">
                         <br>
-                        <input class="btn btn-default" value="Browse..." onclick="document.getElementById('getUpload').click()" style="width:85px;height:30px;">
+                        <input class="btn btn-default" value="Browse..." onclick="document.getElementById('userfile').click()" style="width:85px;height:30px;">
                     </div>
                 </div>
                 <script type="text/javascript">
                     function getFile() {
-                        var upload = document.getElementById("getUpload");
+                        var upload = document.getElementById("userfile");
                          if ('files' in upload) {
                             if (upload.files.length != 0) {
                                 var file = upload.files[0];

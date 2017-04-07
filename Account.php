@@ -2,6 +2,10 @@
 include_once "account_process.php";
 loadInformation();
 include_once "includes/header.php";
+//Check if the person is logged in before allowing page access
+if (isset($_SESSION['id']) == false) {
+	header("Location: login.php");
+}
 ?>
 
 <!-- Main Body Start -->
@@ -44,8 +48,6 @@ include_once "includes/header.php";
                         <?php
                         fillPaymentInfo();
                         ?>
-                        <!-- will eventually have an edit payment info-->
-						<a href="#"><button type="button" class="btn btn-primary btn-md pull-right">Edit</button></a>
 					</div>
 					
 					<div id="Admininstrative=" class="tab-pane fade">

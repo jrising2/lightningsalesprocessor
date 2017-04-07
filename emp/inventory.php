@@ -13,13 +13,20 @@ include "includes/employee_header.php";
             $maxItemCount = 50; //maximum number of items to be displayed in a page
             $totalPages; //Total number of pages given the current search qry
 
-            //Get current employee role
-            $ROLE = "BookSeller"; //bydefault
-            $temp = mysqli_query($link, "SELECT Role FROM Employees WHERE EmployeeID={$_SESSION['ID']}");
-            if (mysqli_num_rows($temp) > 0) {
-                $ROLE = $temp['Role'];
-            }
+            
+			//Check if the person is logged in before allowing page access
+			if (isset($_SESSION['eid']) == false) {
+				header("Location: index.php");
+			}
 
+			//Get current employee role
+            $ROLE;
+            $temp = mysqli_query($link, "SELECT Role FROM Employees WHERE EmployeeID={$_SESSION['eid']}");
+            if (mysqli_num_rows($temp) > 0) {
+                $r = mysqli_fetch_assoc($temp);
+                $ROLE = $r['Role'];
+            }
+			
             //Get information from super globals
             $page = (!isset($_GET['page']))? 1 : $_GET['page'];
             $search = (!isset($_GET['search']))? "" : $_GET['search'];
@@ -202,56 +209,38 @@ include "includes/employee_header.php";
                             break;
                         }
                         $row = $rows[$count];
-                        echo "<a href='managebooks.php?product={$row['ProductID']}' class='list-group-item'>
-    					<div class='row'>
-    						<div class='col-md-2'>
-    							<p>{$row['ProductID']}</p>
-    						</div>
-    						<div class='col-md-2'>
-    							<p>{$row['ProductName']}</p>
-    						</div>
-    						<div class='col-md-2'>
-    							<p>{$row['Genre']}</p>
-    						</div>
-    						<div class='col-md-2'>
-    							<p>{$row['ISBN']}</p>
-    						</div>
-    						<div class='col-md-2'>
-    							<p>x{$row['Stock']}</p>
-    						</div>
-    					</div>
-    				</a>";
-                    $count++;
-                }
-                    ?>
+						if (($ROLE == '1') || ($ROLE == '2')) {
+							echo "<a href='managebooks.php?product={$row['ProductID']}' class='list-group-item'>";
+						} else {
+							echo "<div class='list-group-item'>";
+						}
+    					echo "<div class='row'>
+								<div class='col-md-2'>
+									<p>{$row['ProductID']}</p>
+								</div>
+								<div class='col-md-2'>
+									<p>{$row['ProductName']}</p>
+								</div>
+								<div class='col-md-2'>
+									<p>{$row['Genre']}</p>
+								</div>
+								<div class='col-md-2'>
+									<p>{$row['ISBN']}</p>
+								</div>
+								<div class='col-md-2'>
+									<p>x{$row['Stock']}</p>
+								</div>
+							</div>";
+    					if (($ROLE == '1') || ($ROLE == '2')) {
+							echo "</a>";
+						}else {
+							echo "</div>";
+						}
+						$count++;
+					}
+                ?>
                 </div>
             </div>
-            <!--Side bar for search filters.-->
-            <!--<div class="col-md-2">
-                <p style="font-weight:bold;font-size:115%;border-bottom-style:solid">Search Filters</p>
-                <div class="form-check">
-                    <label class="form-check-label">
-                        <input type="checkbox" class="form-check-input">
-                        Filter 0
-                    </label>
-                    <label class="form-check-label">
-                        <input type="checkbox" class="form-check-input">
-                        Filter 1
-                    </label>
-                    <label class="form-check-label">
-                        <input type="checkbox" class="form-check-input">
-                        Filter 2
-                    </label>
-                    <label class="form-check-label">
-                        <input type="checkbox" class="form-check-input">
-                        Filter 3
-                    </label>
-                    <label class="form-check-label">
-                        <input type="checkbox" class="form-check-input">
-                        Filter 4
-                    </label>
-                </div>
-            </div>-->
         </div>
 
         <?php

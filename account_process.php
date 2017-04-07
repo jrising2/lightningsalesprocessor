@@ -14,26 +14,25 @@ function loadInformation() {
     global $link;
 	//Queries to be called
 	$qryAccSummary = "SELECT FirstName, LastName, Address1, Address2, City, State, ZipCode, Email FROM Customers WHERE CustomerID={$_SESSION['id']}";
-	$qryUserTransactions = "SELECT ProductName, ISBN, Description, Price, TransactionID, Quantity, Status, LineItemTotal, GrandTotal, `Timestamp`, `Status` FROM Products LEFT JOIN Transactions ON Products.ProductID=Transactions.ProductID WHERE CustomerID={$_SESSION['id']} ORDER BY Transactions.TransactionID DESC LIMIT 10";
-	$qryPaymentInformation = "SELECT TransactionID, NameOnCard, CardNumber, CardExpirationMonth, CardExpirationYear, BillingAddress1, BillingAddress2, City, State, Zip From Billing Where CustomerID={$_SESSION['id']}";
-
+	$qryUserTransactions = "SELECT Transactions.ProductID, ProductName, ISBN, Description, Price, TransactionID, DeliveryType, Quantity, LineItemTotal, GrandTotal, `Timestamp`, `Status` FROM Products LEFT JOIN Transactions ON Products.ProductID=Transactions.ProductID WHERE CustomerID={$_SESSION['id']} ORDER BY Transactions.TransactionID DESC LIMIT 10";
+	$qryPaymentInformation = "SELECT BillingID, NameOnCard, CardNumber, CardExpirationMonth, CardExpirationYear, BillingAddress1, BillingAddress2, City, State, ZipCode From Billing Where CustomerID={$_SESSION['id']}";
     //Querying
     $GLOBALS['account_summary_info'] = mysqli_query($link, $qryAccSummary);
 	$GLOBALS['transactions_info'] = mysqli_query($link, $qryUserTransactions);
 	$GLOBALS['payment_info'] = mysqli_query($link, $qryPaymentInformation);
 }
-function conditionAddress($Address2) {
+function conditionAddress($add2) {
     //Small conditional for formatting purposes
-    if ($Address2 == "") {
+    if ($add2 == "") {
         return "";
     } else {
-        return "{$row['Address']}<br>";
+        return "{$add2}<br>";
     }
 }
 function fillAccountSummary() {
 	$row = mysqli_fetch_assoc($GLOBALS['account_summary_info']);
 	$num_rows = mysqli_num_rows($GLOBALS['account_summary_info']);
-    $Address2 = conditionAddress($row['Address']);
+    $Address2 = conditionAddress($row['Address2']); //if address 2 doesnt exist dont't break line
 	$html = <<<EOD
     <table class="table table-bordered">
 	<tbody>
@@ -53,8 +52,8 @@ function fillAccountSummary() {
 			<th scope="row">Shipping Address</th>
 		<td>
 			{$row['Address1']}
-			<br>{${$Address2}}
-			<br>{$row['State']}, {$row['City']}, {$row['ZipCode']}
+			<br>{$Address2}
+			{$row['City']}, {$row['State']}, {$row['ZipCode']}
 		</td>
 		</tr>
 	</tbody>
@@ -72,8 +71,9 @@ function fillTransactions() {
     	<div class="panel panel-default">
     		<div class="panel-heading">
     			<div class="row">
-    				<div class="col-md-9"><style="font-weight:bold">{$row['ProductName']}</style></div>
-    				<div class="col-md-3 text-right">#OrderID: {$row['TransactionID']}<br>{$row['Timestamp']}</div>
+    				<div class="col-md-4"><span style="font-weight:bold;">#OrderID:</span><br>{$row['TransactionID']}</div>
+                    <div class="col-md-4"><span style="font-weight:bold;">Delivery Method:</span><br>{$row['DeliveryType']}</div>
+					<div class="col-md-4"><span style="font-weight:bold;">Date Ordered:</span><br>{$row['Timestamp']}</div>
     			</div>
     		</div>
 EOD;
@@ -84,14 +84,17 @@ EOD;
     	while ($previousID == $currentID) {
     		$html = <<<EOD
             <div class="panel-body">
+				<div class="row">
+					<div class="col-md-9" style="font-weight:bold">{$row['ProductName']}</div>
+				</div>
     			<div class="row">
-    				<div class="col-md-2"><a href="Link to Product in image"><img src="image/{$row['ISBN']}.jpg" alt="Insert Image here" width="100" height="100"/></a></div>
+    				<div class="col-md-2"><a href="productpage.php?id={$row['ProductID']}"><img src="image/{$row['ISBN']}.jpg" alt="Insert Image here" width="100" height="100"/></a></div>
     				<div class="col-md-10">
     					<div class="row">
-    						<div class ="col-md-2"><p>Price<br>$ {$row['Price']}</p></div>
-    						<div class="col-md-2"> <p>Quantity<br>x{$row['Quantity']}</p></div>
-    						<div class="col-md-2"> <p>Total<br>$ {$row['LineItemTotal']}</p></div>
-    						<div class ="col-md-2"><p>Status<br>{$row['Status']}</p></div>
+    						<div class ="col-md-2"><p><span style="font-weight:bold;">Price</span><br>$ {$row['Price']}</p></div>
+    						<div class="col-md-2"> <p><span style="font-weight:bold;">Quantity</span><br>x{$row['Quantity']}</p></div>
+    						<div class="col-md-2"> <p><span style="font-weight:bold;">Total</span><br>$ {$row['LineItemTotal']}</p></div>
+    						<div class ="col-md-2"><p><span style="font-weight:bold;">Status</span><br>{$row['Status']}</p></div>
     					</div>
     					<div class="row">
     						<div class="col-md-8"> <pre>{$row['Description']}</pre></div>
@@ -110,7 +113,7 @@ EOD;
         //final echo for grand total
         echo "<div class='panel-body'>
                 <div class='row'>
-                    <div class ='col-md-12' style='text-align:right;'><p>Grand Total:$ {$row['GrandTotal']}</p></div>
+                    <div class ='col-md-12' style='text-align:right;font-weight:bold;'><p>Grand Total:$ {$row['GrandTotal']}</p></div>
                 </div>
              </div>";
     	echo '</div>'; //closes panel
@@ -119,7 +122,19 @@ EOD;
         echo '<p>No Recent Transactions could be found</p>';
     }
 }
+?>
+<script type="text/javascript">
+function changeValue(item) {
+    //Change the id of the selected button so that it can be seen in post
+    var sub = document.getElementById("payment_" + item);
+    sub.name ="payment";
+    sub.id = "payment";
+    //call submit on the form with the selected button
+    document.getElementById("form_" + item).submit();
 
+};
+</script>
+<?php
 function fillPaymentInfo() {
 	$num_rows = mysqli_num_rows($GLOBALS['payment_info']);
 	for ($i = 0; $i < $num_rows; $i++) {
@@ -127,22 +142,26 @@ function fillPaymentInfo() {
     	$cn = $row['CardNumber'];
     	$size = strlen($cn);
     	$four_digits = str_split($cn, $size - 4);
-
+        $BAddress2 = conditionAddress($row['BillingAddress2']);
     	$html = <<<EOD
     	<div class="panel panel-default">
     		<div class="panel-heading">
     			<div class="row">
     				<div class="col-md-4">{$row['NameOnCard']}</div>
-    				<div class="col-md-6">{$four_digits}</div>
-    				<div class="col-md-2">{$row['CardExpirationMonth']}/{$row['CardExpirationYear']}</div>
+    				<div class="col-md-6">Card ending in {$four_digits[1]}</div>
+    				<div class="col-md-2">Expiration Date: {$row['CardExpirationMonth']}/{$row['CardExpirationYear']}</div>
     			</div>
     		</div>
     		<div class="panel-body">
     			Billing Address:
     			<br>{$row['BillingAddress1']}
-    			<br>{$row['BillingAddress2']}
-    			<br>{$row['City']}, {$row['State']}, {$row['ZipCode']}
-    		</div>
+    			<br>{$BAddress2}
+    			{$row['City']}, {$row['State']}, {$row['ZipCode']}
+                <form id="form_{$row['BillingID']}" action="edit_payment.php" method="POST">
+                    <input type="hidden" id="payment_{$row['BillingID']}" value="{$row['BillingID']}"/>
+                </form>
+                <button onClick="changeValue({$row['BillingID']})" type="button" class="btn btn-primary btn-md pull-right">Edit</button>
+            </div>
     	</div>
 EOD;
         echo $html;
@@ -151,6 +170,9 @@ EOD;
     if ($num_rows == 0) {
         echo '<p>No payment information was found in our records.</p>';
     }
+
+    echo '<a href="edit_payment.php"><button type="button" class="btn btn-primary btn-md pull-right">Add</button></a>';
+
 }
 
 ?> 
