@@ -1,10 +1,30 @@
 <?php
 
+$dblink = mysqli_connect('sql212.epizy.com', 'epiz_19723230', 'icebreaker', 'epiz_19723230_lightnsalesproc') or die ("Connection to database could not be established");
+
+function customerQuery($cid){
+    global $dblink;
+    $sql = "SELECT * FROM Customers WHERE CustomerID = $cid";
+    $result = mysqli_query($dblink,$sql);
+    $row = mysqli_fetch_assoc($result);
+    return $row;
+}
+
+function billingQuery($cid){
+    global $dblink;
+    $sql = "SELECT * FROM Billing WHERE CustomerID = $cid";
+    $result = mysqli_query($dblink,$sql);
+    $rows = array();
+    while ($row = mysqli_fetch_assoc($result)){
+        $rows[] = $row;
+    }
+    return $rows;
+}
+
 function productQuery($pid){
-    $link = mysqli_connect('sql212.epizy.com', 'epiz_19723230', 'icebreaker', 'epiz_19723230_lightnsalesproc') 
-        or die("Connection to database could not be established");
+    global $dblink;
     $sql = "SELECT * FROM Products WHERE ProductID = $pid";
-    $result = mysqli_query($link,$sql);
+    $result = mysqli_query($dblink,$sql);
     $row = mysqli_fetch_assoc($result);
     return $row;
 }
@@ -45,13 +65,28 @@ function error($msg) {
 function updateStock($pid,$quantity){
     $query = productQuery($pid);
     $stock = $query['Stock'] - $quantity;
-    $link = mysqli_connect('sql212.epizy.com', 'epiz_19723230', 'icebreaker', 'epiz_19723230_lightnsalesproc')
-        or die("Connection to database could not be established");
+    global $dblink;
     $newStock = 
     $sql = "UPDATE Products SET Stock = '$stock' WHERE ProductID = '$pid'";
-    $result = mysqli_query($link,$sql);
+    $result = mysqli_query($dblink,$sql);
     $row = mysqli_fetch_assoc($result);
     return $row;
+}
+
+function encrypt($data,$cid){
+    $method = "aes-128-cbc";
+    $key = substr(md5($cid),0,16);
+    $iv = substr(md5($cid),-16);
+    $encryption = openssl_encrypt($data, $method, $key, 0, $iv);
+    return $encryption;
+}
+
+function decrypt($data,$cid){
+    $method = "aes-128-cbc";
+    $key = substr(md5($cid),0,16);
+    $iv = substr(md5($cid),-16);
+    $decryption = openssl_decrypt($data, $method, $key, 0, $iv);
+    return $decryption;
 }
 
 ?>
