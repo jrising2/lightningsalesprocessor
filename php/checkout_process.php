@@ -18,10 +18,10 @@ $row = mysqli_fetch_assoc($result);
 
 $maxtid = $row["max"]; // Find max value of TransactionID
 $newtid = $maxtid + 1; // Increment above value by 1 and assign the value to $newtid
-
 $cid = $_SESSION["id"]; // CustomerID
 $gtotal = $_SESSION["total"]; // Grand Total
-$delivery = $_POST["delivery"]; // Delivery Type
+$bid = $_POST["bid"]; // BillingID
+$delivery = $_POST["delivery"];
 
 // Create Transaction Data
 if(isset($_SESSION["cart"])){
@@ -30,8 +30,8 @@ if(isset($_SESSION["cart"])){
     $quantity = $item["quantity"];
     $price = $item["price"];
     $total = $price * $quantity;
-    $sql = "INSERT INTO Transactions (TransactionID,ProductID,CustomerID,Quantity,DeliveryType,LineItemTotal,GrandTotal)
-      VALUES ('$newtid','$pid','$cid','$quantity','$delivery','$total','$gtotal')";
+    $sql = "INSERT INTO Transactions (TransactionID,ProductID,CustomerID,Quantity,LineItemTotal,GrandTotal,BillingID,DeliveryType)
+      VALUES ('$newtid','$pid','$cid','$quantity','$total','$gtotal','$bid','$delivery')";
     if (!mysqli_query($link, $sql)){
       error('A database write error occurred');
     }
