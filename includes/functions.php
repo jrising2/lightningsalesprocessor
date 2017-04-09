@@ -11,11 +11,11 @@ function customerQuery($cid){
 }
 
 function billingQuery($bid){
-  global $link;
-  $sql = "SELECT * FROM Billing WHERE BillingID = $bid";
-  $result = mysqli_query($link,$sql);
-  $row = mysqli_fetch_assoc($result);
-  return $row;
+    global $dblink;
+    $sql = "SELECT * FROM Billing WHERE BillingID = $bid";
+    $result = mysqli_query($dblink,$sql);
+    $row = mysqli_fetch_assoc($result);
+    return $row;
 }
 
 function customerCards($cid){
