@@ -1,19 +1,39 @@
 <?php
+include_once "../includes/database.php";
 session_start();
 
-function managerMenu($eid){
-    $link = mysqli_connect('sql212.epizy.com', 'epiz_19723230', 'icebreaker', 'epiz_19723230_lightnsalesproc') 
-        or die("Connection to database could not be established");
-    $sql = "SELECT Role FROM Employees WHERE EmployeeID = $eid";
+function error($msg) {
+    echo "
+    <script language='JavaScript'>
+        alert('$msg');
+        history.back();
+    </script>
+    ";
+}
+
+function roleName($rid){
+    global $link;
+    $sql = "SELECT * FROM Roles WHERE RolesID = $rid";
     $result = mysqli_query($link,$sql);
     $row = mysqli_fetch_assoc($result);
-    $role = $row["Role"];
-    if ($role == 1){
+    return $row["RoleName"];
+}
+
+$roleName = "(".roleName($_SESSION["role"]).")";
+
+function managerMenu($rid){
+    if ($rid == 1){
         $active = "";
         if (basename($_SERVER['PHP_SELF']) == 'editemployee.php'){$active = "class='active'";}
         echo "<li ".$active." ><a href='editemployee.php'>Manage Employees</a></li>";
     }
 }
+
+// Check for login status
+if (!isset($_SESSION["eid"])){
+  error('You must be logged in to access this page.');
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -49,7 +69,7 @@ function managerMenu($eid){
                         <ul class="nav navbar-nav">
                             <?php
                             if(isset($_SESSION['eid'])){
-                                echo "<li><a href='tracking.php' style='color: white'><span class='glyphicon glyphicon-user'></span> ".$_SESSION['efname']."</a></li>";
+                                echo "<li><a href='tracking.php' style='color: white'><span class='glyphicon glyphicon-user'></span> ".$_SESSION['efname']." ".$_SESSION['elname']." ".$roleName."</a></li>";
                                 echo "<li><a href='php/logout.php' style='color: white'><span class='glyphicon glyphicon-log-out'></span> Logout</a></li>";
                             } else {
                                 echo "<li><a href='index.php' style='color: white'><span class='glyphicon glyphicon-log-in'></span> Login</a></li>";
@@ -80,7 +100,7 @@ function managerMenu($eid){
                             <li <?php if (basename($_SERVER['PHP_SELF']) == 'orders.php'){echo 'class="active"';} ?> ><a href="orders.php">Orders</a></li>
                             <li <?php if (basename($_SERVER['PHP_SELF']) == 'inventory.php'){echo 'class="active"';} ?> ><a href="inventory.php">Inventory</a></li>
                             <li <?php if (basename($_SERVER['PHP_SELF']) == 'printables.php'){echo 'class="active"';} ?> ><a href="printables.php">Generate Printables</a></li>
-                            <?php if(isset($_SESSION['eid'])){managerMenu($_SESSION['eid']);} ?>
+                            <?php if(isset($_SESSION['eid'])){managerMenu($_SESSION["role"]);} ?>
                     </div>
                 </nav>
             </div>
