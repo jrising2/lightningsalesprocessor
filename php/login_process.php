@@ -3,7 +3,7 @@ include_once "../includes/database.php";
 include_once "../includes/functions.php";
 session_start();
 
-$uid = isset($_POST['email']) ? $_POST['email'] : $_SESSION['email'];
+$uid = isset($_POST['email']) ? mysqli_real_escape_string($link, $_POST['email']) : $_SESSION['email'];
 $pwd = isset($_POST['pass']) ? $_POST['pass'] : $_SESSION['pass'];
 $pwd = md5($pwd);
 

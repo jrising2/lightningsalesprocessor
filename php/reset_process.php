@@ -3,7 +3,7 @@ include_once "../includes/database.php";
 include_once "../includes/functions.php";
 session_start();
 
-$email = $_POST['email'];
+$email = mysqli_real_escape_string($link, $_POST['email']);
 
 if ($_POST['email']=='') {
     error('One or more required fields were left blank.\\n'.

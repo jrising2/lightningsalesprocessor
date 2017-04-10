@@ -3,15 +3,15 @@ include_once "../includes/database.php";
 include_once "../includes/functions.php";
 session_start();
 
-$fname = $_POST['fname'];
-$lname = $_POST['lname'];
-$email = $_POST['email'];
+$fname = mysqli_real_escape_string($link, $_POST['fname']);
+$lname = mysqli_real_escape_string($link, $_POST['lname']);
+$email = mysqli_real_escape_string($link, $_POST['email']);
 $pass = md5($_POST['pass']);
-$add1 = $_POST['address1'];
-$add2 = $_POST['address2'];
-$city = $_POST['city'];
-$state = $_POST['state'];
-$zip = $_POST['zip'];
+$add1 = mysqli_real_escape_string($link, $_POST['address1']);
+$add2 = mysqli_real_escape_string($link, $_POST['address2']);
+$city = mysqli_real_escape_string($link, $_POST['city']);
+$state = mysqli_real_escape_string($link, $_POST['state']);
+$zip = mysqli_real_escape_string($link, $_POST['zip']);
 
 if ($_POST['fname']=='' or $_POST['lname']==''
   or $_POST['email']=='' or $_POST['pass']=='' or $_POST['passrp']=='') {
