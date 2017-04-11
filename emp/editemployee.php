@@ -7,7 +7,6 @@ require_once('config/database.php');
 		- How passwords are stored? Might be fine?
 		- Prevent refreshes from adding info again.
 		- Making the edit & delete employees sections a little neater.
-			- Remember to md5 password when editing.
 		- Making sure only employees with the proper role(s) have access.
 		- Add error messages when appropriate.
 		- Verify that when id/role # are input, that they are ints.
