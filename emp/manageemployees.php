@@ -4,10 +4,10 @@ require_once('config/database.php');
 ?>
 	
 	<!-- Changes I will be working on:
-    - Making sure only employees with the proper role(s) have access.
-		- Get the edit form to work
-			- Redirect to editemployee page and fill out employee id input field.
+		- Get the edit form to work - DONE
+			- Redirects to editemployee and fills in the form, as it should!
 		- Verify that when id/role # are input, that they are ints.
+		- Make sure only employees with the proper role can access this page.
 		- Other than that, I think this page is good?
 	-->
 			
@@ -79,9 +79,9 @@ require_once('config/database.php');
 					<td style="border-top: none">
 						<form class="form-inline" action="editemployee.php" method="post">
 							<div class="form-group" style="text-align:left">
-								<input type="text" class="form-control" id="manage_edit_emp" style="width:263px">
+								<input type="text" class="form-control" name="editemp" style="width:263px">
 							</div><br /><br />
-							<button type="submit" class="btn btn-default" align="right" id="manage_edit_submit">Submit</button>
+							<button type="submit" class="btn btn-default" align="right" name="btnEmpIDEdit">Submit</button>
 						</form>
 					</td>
 				</tr>
