@@ -62,8 +62,9 @@ var report_type = "";
 
                             </div>
                             <div id="Step3" class="tab-pane">
-                                <h3></h3>
-                                <p>Some content in menu 2.</p>
+                                <h3>Generate Report</h3>
+                                <p>php for this section in progress.</p>
+                                <p>also generate report is partially finished.</p>
                             </div>
                         </div>
                      </div>
