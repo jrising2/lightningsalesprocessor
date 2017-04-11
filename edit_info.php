@@ -17,9 +17,9 @@ $ERROR;
 if (isset($_GET['error'])) {
     $ERROR = $_GET['error'];
 }
-
+//small note if an error happens we may want to make a post that resends the edited form informaiton
 if ($ERROR == "1"){
-    echo  '<div class="alert alert-danger" role="alert">
+    echo  '<div class="alert alert-warning" role="alert">
             <strong>Error: </strong>Illegal Characters in field: First Name.
         </div>';
 }else if ($ERROR == "2") {
@@ -27,7 +27,7 @@ if ($ERROR == "1"){
             <strong>Error: </strong>Illegal Characters in field: Last Name.
         </div>';
 } else if ($ERROR =="3"){
-    echo '<div class="alert alert-danger" role="alert">
+    echo '<div class="alert alert-warning" role="alert">
             <strong>Error: </strong>Invalid email address entered.
         </div>';
 } else if ($ERROR == "4"){
@@ -118,9 +118,9 @@ if ($ERROR == "1"){
                                     $st = array("Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "District of Columbia", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming");
 									for ($i = 0; $i < 50; $i++) {
                                         if (strtolower($st[$i]) == strtolower($row['State'])) {
-                                            echo "<option value=" . $st[$i] . " selected>" . $st[$i] . "</option>";
+                                            echo "<option value='" . $st[$i] . "' selected>" . $st[$i] . "</option>";
                                         } else {
-                                            echo "<option value=" . $st[$i] . ">" . $st[$i] . "</option>";
+                                            echo "<option value='" . $st[$i] . "'>" . $st[$i] . "</option>";
                                         }
                                     }
                                 ?>

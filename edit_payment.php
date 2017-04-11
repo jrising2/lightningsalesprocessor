@@ -15,6 +15,20 @@ if ($card != "") {
     $row = mysqli_fetch_assoc($account_info);
 }
 
+$ERROR;
+if (isset($_POST['error'])) {
+    $ERROR = $_POST['error'];
+}
+
+if ($ERROR == "1"){
+    echo  '<div class="alert alert-danger" role="alert">
+            <strong>System Error: </strong>Error adding your payment information.
+        </div>';
+}else if ($ERROR == "2") {
+     echo  '<div class="alert alert-danger" role="alert">
+            <strong>System Error: </strong>Error updating your payment information.
+        </div>';
+}
 ?>
         <div class="col-md-2"></div>
         <div class="col-md-8">

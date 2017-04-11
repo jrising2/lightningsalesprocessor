@@ -1,5 +1,7 @@
 <?php
 include_once "includes/database.php";
+include_once "includes/validation.php";
+session_start();
 
 //this form still needs a lot of error checking/validation
 global $link;
@@ -14,9 +16,11 @@ $city = $link->real_escape_string($_POST['city']);
 $zip = $link->real_escape_string($_POST['zip']);
 $bid = $_POST['bid'];
 
-//validate all the edits here //May or may not fix validation due to time constraints
+echo '<form id="return" action="edit_payment.php?" method="POST">
+        <input type="hidden" id="payment" value="{$bid}"/>
+        <input type="hidden" id="error" value="" />
+    </form>';
 
-$_SESSION['id'] = 1;
 echo $bid;
 
 if ($bid == "") {
@@ -27,7 +31,14 @@ if ($bid == "") {
         header("Location: account.php");
     } else {
         //do some code for unsuccessful entry
-        //header("Location: edit_payment.php?payment={$bid}&error=1");
+        ?>
+        <script type="text/javascript">
+            var sub = document.getElementById("error");
+            sub.value = "1"
+            //call submit on the form with the selected button
+            document.getElementById("return").submit();
+        </script>
+        <?
     }
 }else {
     $updatebilling = "UPDATE Billing SET NameOnCard='{$nameoncard}', CardNumber='{$cardnum}', CardExpirationMonth={$month}, CardExpirationYear={$year}, BillingAddress1='{$add1}', BillingAddress2='{$add2}', State='{$state}', City='{$city}', ZipCode='{$zip}' WHERE BillingID={$bid}";
@@ -37,7 +48,14 @@ if ($bid == "") {
         header("Location: account.php");
     } else {
         //do some code for unsuccessful entry
-        header("Location: edit_payment.php?payment={$bid}&error=2");
+        ?>
+        <script type="text/javascript">
+            var sub = document.getElementById("error");
+            sub.value = "2";
+            //call submit on the form with the selected button
+            document.getElementById("return").submit();
+        </script>
+        <?
     }
 }
 
