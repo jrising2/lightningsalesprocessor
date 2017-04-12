@@ -16,9 +16,9 @@ $city = $link->real_escape_string($_POST['city']);
 $zip = $link->real_escape_string($_POST['zip']);
 $bid = $_POST['bid'];
 
-echo '<form id="return" action="edit_payment.php?" method="POST">
-        <input type="hidden" id="payment" value="{$bid}"/>
-        <input type="hidden" id="error" value="" />
+echo '<form name="return" id="return" action="edit_payment.php?" method="POST">
+        <input type="hidden" name="payment" id="payment" value="{$bid}"/>
+        <input type="hidden" name="error" id="error" value="" />
     </form>';
 
 echo $bid;
