@@ -111,4 +111,12 @@ function checkShippingExist($cid){
     }
 }
 
+function maxpid(){
+    global $dblink;
+    $sql = "SELECT MAX(ProductID) AS max FROM Products";
+    $result = mysqli_query($dblink,$sql);
+    $row = mysqli_fetch_assoc($result);
+    return $row["max"];
+}
+
 ?>
