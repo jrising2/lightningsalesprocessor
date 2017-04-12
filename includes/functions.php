@@ -97,4 +97,18 @@ function decrypt($data,$cid){
     return $decryption;
 }
 
+function checkCardExist($cid){
+    $row = customerCards($cid);
+    if($row==false){
+        error("You must add a credit card to your acccount to place on online order");
+    }
+}
+
+function checkShippingExist($cid){
+    $row = customerQuery($cid);
+    if($_POST["delivery"]=="Shipping" && ($row["Address1"]=="" || $row["City"]=="" || $row["State"]=="" || $row["ZipCode"]=="")){
+        error("You must add a shipping address to your account to place a shipping order");
+    }
+}
+
 ?>

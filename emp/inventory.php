@@ -13,12 +13,6 @@ include "includes/employee_header.php";
             $maxItemCount = 50; //maximum number of items to be displayed in a page
             $totalPages; //Total number of pages given the current search qry
 
-            
-			//Check if the person is logged in before allowing page access
-			if (isset($_SESSION['eid']) == false) {
-				header("Location: index.php");
-			}
-
 			//Get current employee role
             $ROLE;
             $temp = mysqli_query($link, "SELECT Role FROM Employees WHERE EmployeeID={$_SESSION['eid']}");

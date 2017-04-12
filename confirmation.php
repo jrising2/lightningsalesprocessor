@@ -9,6 +9,8 @@ if (!isset($_SESSION["id"])){
   error('You must be logged in to checkout');
 }
 
+checkShippingExist($_SESSION["id"]);
+
 $card = billingQuery($_POST["card"]);
 $bid = $card["BillingID"];
 $name = $card["NameOnCard"];

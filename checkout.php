@@ -8,10 +8,10 @@ if (!isset($_SESSION["id"])){
   error('You must be logged in to checkout');
 }
 
-function cardOption($cid){
+checkCardExist($_SESSION["id"]);
 
-  $row = customerCards($cid);
-    
+function cardOption($cid){
+  $row = customerCards($cid);  
   foreach($row as $card){
     $last4 = substr($card["CardNumber"],-4);
     $bid = $card["BillingID"];
