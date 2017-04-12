@@ -9,6 +9,7 @@ function error($msg) {
         history.back();
     </script>
     ";
+    exit;
 }
 
 function roleName($rid){
