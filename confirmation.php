@@ -27,7 +27,7 @@ $delivery = $_POST["delivery"];
 ?>
     <h2 class="well">Confirm Order Details</h2>
     <h2>Order Details</h2>
-    <h3><a id="btnEmpty" href="cart.php">Edit Cart</a></h3>
+    <h3><a id="btnEmpty" href="cart.php">Edit</a></h3>
 
 
     <div class="panel panel-default">
@@ -83,6 +83,7 @@ $delivery = $_POST["delivery"];
       <form role="form" method="POST" action="php/checkout_process.php">
         <h2>Payment Details</h2>
         <h4>Credit Card</h4>
+        <p style="color:red">Make sure to enter security code (3 digit code on back of card) before placing order</p>
         <input type="hidden" name="bid" <?php echo "value='$bid'"; ?>>
         <div class="row">
           <div class="form-group tight-form-group col-md-4">
@@ -104,8 +105,8 @@ $delivery = $_POST["delivery"];
               <?php echo "<input type='text' class='form-control' name='expy' value='$expy' readonly='readonly'>"; ?>
           </div>
           <div class="form-group tight-form-group col-md-2">
-              <label class="sr-only" for="exp">Security Number</label>Security Number
-              <?php echo "<input type='text' class='form-control' name='sec' value='$sec' readonly='readonly'>"; ?>
+              <label class="sr-only" for="exp">Security Code</label>Security Code
+              <input type='text' class='form-control' name='sec' required='required'>
           </div>
         </div>
 
