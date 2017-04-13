@@ -1,6 +1,7 @@
 <!--PHP for Account Summary page -->
 <?php
 include_once "includes/database.php";
+include_once "includes/functions.php";
 session_start();
 
 //global variables
@@ -139,7 +140,7 @@ function fillPaymentInfo() {
 	$num_rows = mysqli_num_rows($GLOBALS['payment_info']);
 	for ($i = 0; $i < $num_rows; $i++) {
     	$row = mysqli_fetch_assoc($GLOBALS['payment_info']);
-    	$cn = $row['CardNumber'];
+    	$cn = decrypt($row['CardNumber'], $_SESSION['id']);
     	$size = strlen($cn);
     	$four_digits = str_split($cn, $size - 4);
         $BAddress2 = conditionAddress($row['BillingAddress2']);
