@@ -6,7 +6,7 @@ session_start();
 //this form still needs a lot of error checking/validation
 global $link;
 $nameoncard = $link->real_escape_string($_POST['nameoncard']);
-$cardnum = encrypt($link->real_escape_string($_POST['cardnumber']), $_SESSION['id']);
+$cardnum = $link->real_escape_string($_POST['cardnumber']);
 $month = $link->real_escape_string($_POST['month']);
 $year = $link->real_escape_string($_POST['year']);
 $add1 = $link->real_escape_string($_POST['add1']);
