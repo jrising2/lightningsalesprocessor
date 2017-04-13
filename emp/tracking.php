@@ -1,7 +1,7 @@
 <?php
 ini_set('display_errors',1);
 include "./includes/employee_header.php";
-include_once "php/emp_home.php";
+include_once "php/tracking_funcs.php";
 
 $employeeID = $_SESSION['eid'];
 
@@ -24,12 +24,14 @@ if(isset($_GET['getjob']) && $currentJob->num_rows == 0){
 }
 
 if(isset($_POST['status'])){
-    modifyTransaction($newjob['TransactionID'],"Status","'".$_POST['status']."'");
+    if($_POST['status'] == 'open' || $_POST['status'] == 'assigned' || $_POST['status'] == 'closed'){
+        modifyTransaction($newjob['TransactionID'],"Status","'".$_POST['status']."'");
+    }
 
     if($_POST['status'] == 'open'){
         modifyTransaction($newjob["TransactionID"],"EmployeeID",'NULL');
     }
-    header("Refresh:0");
+    header("Refresh:0; url=tracking.php");
 }
 ?>
 
@@ -64,7 +66,7 @@ if(isset($_POST['status'])){
                                             <br><?php echo $newjob['TransactionID'] ?></p>
                                     </div>
                                     <div class="col-md-2">
-                                        <p><strong>CustomerID</strong><br><?php echo $newjob['CustomerID']; ?></p>
+                                        <p><strong><span style="color: darkgreen;">Customer</span>ID</strong><br><?php echo $newjob['CustomerID']; ?></p>
                                     </div>
                                     <div class="col-md-2">
                                         <p><strong>Method</strong>
@@ -73,7 +75,7 @@ if(isset($_POST['status'])){
                                     </div>
                                     <div class="col-md-2">
                                         <p><strong>Status</strong>
-                                            <br><?php getStatus($newjob['TransactionID']); //echo $newjob['Status']; ?></p>
+                                            <br><?php getStatus($newjob['TransactionID']); ?></p>
                                     </div>
                                     <div class="col-md-2">
                                         <p><strong>Total</strong>
@@ -81,11 +83,11 @@ if(isset($_POST['status'])){
                                         </p>
                                     </div>
                                     <div class="col-md-2 form-inline">
-                                        <button type="submit" class="btn btn-danger">Change</button><br>
-                                        <a class="btn btn-primary" href="#">More Info</a>
+                                        <button type="submit" class="btn btn-primary">Change</button><br>
+<!--                                        <a class="btn btn-primary" href="#">More Info</a>-->
                                     </div>
                                 </div>
-                                <?php }else{echo 'No job is currently assigned.';} ?>
+                                <?php }else{echo '<p>No job is currently assigned.</p>';} printAllInformation($newjob); ?>
                                 </form>
                             </div>
                         </div>
@@ -95,10 +97,14 @@ if(isset($_POST['status'])){
                     <div id="NewOrders" class="tab-pane fade">
                         <h2>Orders</h2>
                         <a href="tracking.php?getjob=1" class="btn btn-primary">Get Next Job</a>
+
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-md-10">
-                                    <?php $allrows = allAvailableJobs(); foreach($allrows as $singlejob){ ?>
+                                    <?php $allrows = allAvailableJobs();
+                                    if(empty($allrows)) echo '<p>There are currently no jobs in the queue.</p>';
+                                    foreach($allrows as $singlejob){
+                                    ?>
                                     <div class="row bs-callout bs-callout-success">
                                         <div class="col-md-2">
                                             <p><strong>TransID</strong>
