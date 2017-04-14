@@ -1,6 +1,6 @@
 <?php 
 include('includes/employee_header.php'); 
-require_once('config/database.php');
+include "../includes/database.php";
 ?>
 
 	<!-- Changes I will be working on:
