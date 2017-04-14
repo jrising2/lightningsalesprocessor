@@ -1,5 +1,5 @@
 <?php 
-include('includes/header.php'); 
+include('includes/employee_header.php'); 
 require_once('config/database.php');
 ?>
 
