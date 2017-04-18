@@ -1,155 +1,78 @@
 <!DOCTYPE html>
+<script ="text/javascript">
+//JS GLOBALS
+var curSelect = "";
+</script>
+<h3>Date Selection:</h3>
 <div class="row">
-    <div class="col-md-6">
-        <p style="font-weight:bold">Start Date:</p>
+    <div class="col-md-12" id="duration_select">
+        <p style="font-weight:bold">Report Duration:</p>
         <div class="row">
-            <div class="col-md-3">
-                <select type="text" class="form-control" name="YearStart" id="YearStart" style="width:100px">
-                    <option>2017</option>
-                </select>
-            </div>
-            <script type="text/javascript">
-                function monthStartChange() {
-                    var month = document.getElementById("MonthStart");
-                    var days = document.getElementById("DayStart");
-                    var i = 0;
-                    for (i = days.options.length - 1; i >= 0; i--) {
-                        days.removeChild(days.options[i]);
-                    }
-                    var now = new Date();
-                    var months = new Date(now.getFullYear(), month.value, 0).getDate();
-                    for (i = 1; i <= parseInt(months.toString()); i++){
-                        var opt = document.createElement('option');
-                        opt.appendChild(document.createTextNode(i.toString()));
-                        days.appendChild(opt);
-                    }
-                }
-            </script>
-            <div class="col-md-3">
-                <?php
-                echo'<select type="text" onChange="monthStartChange()" class="form-control" id="MonthStart" style="width:120px">
-                    <option value="1" selected>January</option>
-                    <option value="2">February</option>
-                    <option value="3">March</option>
-                    <option value="4">April</option>
-                    <option value="5">May</option>
-                    <option value="6">June</option>
-                    <option value="7">July</option>
-                    <option value="8">August</option>
-                    <option value="9">September</option>
-                    <option value="10">October</option>
-                    <option value="11">November</option>
-                    <option value="12">December</option>
-                </select>';
-                ?>
-            </div>
+			<script type="text/javascript">			
+				$("#ReportDuration").on('change', function() {
+					//REMOVE ANY PREVIOUS APPENDS
+					if ((curSelect == "daily") || (curSelect == "weekly")) {
+						$("#append_datepicker").remove();
+					} else if (curSelect == "quarterly") {
+						$("#append_quarters").remove();
+					}
 
-            <div class="col-md-3">
-                <select type="text" class="form-control" id="DayStart">
-                    <?php
-                        $days = cal_days_in_month(CAL_GREGORIAN , 1 , intval(date("Y")));
-                        for ($i = 1; $i <= $days; $i++) {
-                            echo '<option>' . $i . '</option>';
-                        }
-                    ?>
+					if ((this.value == "daily") || (this.value == "weekly")) {
+						//Add row divide
+						var add = $("<div class='row' id='append_datepicker'></div>");
+						$("#duration_select").append(add);
+						
+						//add report date picker to previously added row divide
+						var dp = $("<div class='col-md-4'><div id='datepicker'></div></div>");
+						$("#append_datepicker").append(dp);
+						
+						//Embed date picker in the html
+						$( function() {
+							$("#datepicker").datepicker();
+						});
+						//$("#datepicker").datepicker("option", "dateFormat", "yy-mm-dd");
+						
+						if (this.value == "daily") {
+							$("#prompt").text("Select date for the report:");
+							curSelect = "daily";
+						} else if (this.value == "weekly") {
+							$("#prompt").text("Select start date for the report:");
+							curSelect = "weekly";
+						}
+					} else if (this.value == "quarterly") {
+						//Add row divide
+						var add = $("<div class='row' id='append_quarters'></div>");
+						$("#duration_select").append(add);
+						
+						//add quarters check boxes
+						var i;
+						for (i = 1; i < 5; i++ ) {
+							var quart = $('<div class="col-md-12"><div class="form-check"><label class="form-check-label"><input class="form-check-input" type="checkbox" value="quarter' + i.toString() + '">Q' +  i.toString() + '</label></div></div>');
+							$("#append_quarters").append(quart);
+						}
+						$("#prompt").text("Select the quarters to include the report:");
+						curSelect = "quarterly";
+					} else if (this.value == "") {
+						curSelect = "";
+					}
+				});	
+			</script>
+			<div class="col-md-3">
+				<select type="text" class="form-control" name="ReportDuration" id="ReportDuration">
+                    <option value="" selected></option>
+					<option value="daily">Daily Sales Report</option>
+					<option value="weekly">Weekly Sales Report</option>
+					<option value="quarterly">Quarterly Sales Report</option>
                 </select>
-            </div>
+			</div>
         </div>
-    </div><!--startdate col-6 divide-->
-
-    <div class="col-md-6">
-        <p style="font-weight:bold">End Date:</p>
-        <div class="row">
-            <div class="col-md-3">
-                <select type="text" class="form-control" name="YearEnd" id="YearEnd" style="width:100px">
-                    <option>2017</option>
-                </select>
-            </div>
-            <script type="text/javascript">
-                function monthEndChange() {
-                    var month = document.getElementById("MonthEnd");
-                    var days = document.getElementById("DayEnd");
-                    var i = 0;
-                    for (i = days.options.length - 1; i >= 0; i--) {
-                        days.removeChild(days.options[i]);
-                    }
-                    var now = new Date();
-                    console.log(month.value);
-                    var months = new Date(now.getFullYear(), month.value, 0).getDate();
-                    for (i = 1; i <= parseInt(months.toString()); i++){
-                        var opt = document.createElement('option');
-                        opt.appendChild(document.createTextNode(i.toString()));
-                        days.appendChild(opt);
-                    }
-                }
-            </script>
-            <div class="col-md-3">
-                <?php
-                echo'<select type="text" onChange="monthEndChange()" class="form-control" name="MonthEnd" id="MonthEnd" style="width:120px">
-                    <option value="1" selected>January</option>
-                    <option value="2">February</option>
-                    <option value="3">March</option>
-                    <option value="4">April</option>
-                    <option value="5">May</option>
-                    <option value="6">June</option>
-                    <option value="7">July</option>
-                    <option value="8">August</option>
-                    <option value="9">September</option>
-                    <option value="10">October</option>
-                    <option value="11">November</option>
-                    <option value="12">December</option>
-                </select>';
-                ?>
-            </div>
-            <div class="col-md-3">
-                <select type="text" class="form-control" id="DayEnd">
-                    <?php
-                        $days = cal_days_in_month(CAL_GREGORIAN , 1 , intval(date("Y")));
-                        for ($i = 1; $i <= $days; $i++) {
-                            echo '<option>' . $i . '</option>';
-                        }
-                    ?>
-                </select>
-            </div>
-        </div>
-    </div><!--startdate col-6 divide-->
+		<div class ="row" style="padding-top:10px">
+			<div class="col-md-4">
+				<p style="font-weight:bold" id="prompt"></p>
+				<input type="hidden" name="date" id="date" value=""/>
+			</div>
+		</div>
+		
+    </div><!--startdate col-12 divide-->
 
 </div>
-<div class="row" style="padding-top:15px">
-    <div class="col-md-6">
-        <label for="producttype">Product Type/Category</label>
-        <select multiple class="form-control" id="ProductType" style="min-height:200px">
-            <?php
-            for($i = 0; $i < mysqli_num_rows($result); $i++) {
-               $row = mysqli_fetch_assoc($result);
-               echo '<option>' . $row['Genre'] . '</option>';
-            }
-            ?>
-        </select>
-    </div>
-    <!-- This is a bit of extra work may not keep this-->
-    <div class="col-md-6">
-        <label for="productlist">Product List</label>
-        <select multiple class="form-control" id="ProductList" style="min-height:200px">
-            <option>XXXXXX</option>
-            <option>XXXXXX</option>
-            <option>XXXXXX</option>
-            <option>XXXXXX</option>
-            <option>XXXXXX</option>
-        </select>
-    </div>
-</div>
-
-<div class="row" style="padding-top:15px">
-    <div class="col-md-2">
-        <label for="stock" class="col-form-label">Stock Threshold:</label>
-        <input class="form-control" type="text" name="stock">
-    </div>
-</div>
-<!-- I plan to generate this piece of html through php when the form is submitted (maybe)-->
-<!--<object data='http://www.pdf995.com/samples/pdf.pdf'
-    type='application/pdf'
-    width='100%'
-    height='100%'>
-<p>This browser does not support inline PDFs. Please download the PDF to view it: <a href="http://www.pdf995.com/samples/pdf.pdf">Download PDF</a></p>
-</object>-->

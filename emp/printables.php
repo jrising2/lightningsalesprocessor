@@ -1,19 +1,17 @@
-<?
-include "../includes/database.php";
-include "includes/employee_header.php";
+<?php
+require_once "includes/employee_header.php";
+require "../includes/database.php";
 global $link;
-
-$qry = "SELECT DISTINCT Genre FROM Products ORDER BY Genre ASC";
-$result = mysqli_query($link, $qry);
+$qryEmployees = "SELECT FirstName, LastName, Role FROM Employees"
+//$qryOrders = "SELECT Quantity, Status, DeliveryType, TimeStamp FROM Transactions"
 
 
 ?>
-
 <script type="text/javascript">
 //Globabls for controlling the page
 var report_type = "";
-
 </script>
+
     <div class="panel panel-default">
         <div class="panel-heading">
             <h2>Report Generation</h2>
@@ -44,27 +42,34 @@ var report_type = "";
                         <div class="tab-content">
                             <div id="Step1" class="tab-pane active">
                                 <h3>Choose the Type to generate:</h3>
-                                <div class="form-check">
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" type="radio" name="salesreport" id="salesreport" value="sales">
-                                        Sales Report
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" type="radio" name="employeesreport" id="employeesreport" value="employees">
-                                        Employee Report
-                                    </label>
+                                <div class="form-group">
+                                    <div class="radio">
+                                        <label><input type="radio" name="whichreport" id="salesreport" value="sales">Sales Report</label>
+                                    </div>
+                                    <div class="radio">
+                                        <label><input type="radio" name="whichreport" id="employeesreport" value="employees">Employee Report</label>
+                                    </div>
                                 </div>
                             </div>
                             <div id="Step2" class="tab-pane">
-                                <h3>Setup Filter Options:</h3>
-
+                                
                             </div>
-                            <div id="Step3" class="tab-pane">
-                                <h3>Generate Report</h3>
-                                <p>php for this section in progress.</p>
-                                <p>also generate report is partially finished.</p>
+							<div id="Step3" class="tab-pane">
+                                
+                            </div>
+                            <div id="Step4" class="tab-pane">
+                                <h3>Generate Report:</h3>
+                                <div class="form-group">
+                                    <div class="radio">
+                                        <label><input type="radio" name="viewtype" id="webview" value="webpage">View as webpage</label>
+                                    </div>
+                                    <div class="radio">
+                                        <label><input type="radio" name="viewtype" id="pdfview" value="pdf">View as pdf</label>
+                                    </div>
+									<div class="radio">
+                                        <label><input type="radio" name="viewtype" id="dpdfview" value="dpdf">Download as pdf</label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                      </div>
@@ -85,27 +90,34 @@ var report_type = "";
         </div>
     </div>
     <script type="text/javascript">
+		//PREVIOUS FUNCTION
         $("#previous").click(function() {
             console.log($("#previous").val());
-            if ($("#previous").val() == "step1") {
+            if ($("#previous").val() == "step1") { //In Step2 to Step1
                 //prep for step 2
                 $("#previous").css("visibility", "hidden");
                 $("#previous").val("");
                 $("#next").val("step2");
                 $('#all_steps a[href="#Step1"]').tab('show');
 
-            } else if ($("#previous").val() == "step2") {
+            } else if ($("#previous").val() == "step2") { //In Step3 to Step2
                 $("#previous").val("step1");
-                $("#next").type = "button";
                 $("#next").val("step3");
                 $('#all_steps a[href="#Step2"]').tab('show');
+				
+            }else if ($("#previous").val() == "step3") { //In Step4 to Step3
+                $("#previous").val("step2");
+                $("#next").val("step4");
+                $('#all_steps a[href="#Step3"]').tab('show');
             }
         });
-
+		
+		//NEXT FUNCTION
         $("#next").click(function() {
-            if ($("#next").val() == "step2") {
+			
+            if ($("#next").val() == "step2") { //In Step1 to Step2
                 //determine which step 2:
-                if ($("#salesreport").is(":checked") == true) {
+                if ($("#salesreport").is(":checked")  == true) {
                     $.get("printables_sales_step2.php", function(data){
                         if (report_type != "Sales"){
                             $("#Step2").html(data);
@@ -113,7 +125,7 @@ var report_type = "";
                         }
                     });
                 }else if ($("#employeesreport").is(":checked") == true){
-                    $.get("banner.html", function(data){
+                    $.get("printables_employees_step2.php", function(data){
                         if (report_type != "Employees"){
                             $("#Step2").html(data);
                             report_type = "Employees";
@@ -129,18 +141,62 @@ var report_type = "";
                 $("#previous").val("step1");
                 $("#next").val("step3");
                 $('#all_steps a[href="#Step2"]').tab('show');
-            } else if ($("#next").val() == "step3") {
+            } else if ($("#next").val() == "step3") { //In Step2(date selection) to Step3(filtering)
+				//Do some code here to make sure step2 forms is filled
+				if ($("#ReportDuration").val() == "") {
+					alert("No report duration type selected");
+					return;
+				}
+				if ($("#datepicker").datepicker("getDate") == null) {
+					alert("No start date is selected");
+					return;
+				}
+				//prep for step 3
+				if (report_type == "Sales") {
+					$.get("printables_sales_step3.php", function(data){
+						$("#Step3").html(data);
+					});
+				}else if (report_type == "Employees") {
+					$.get("printables_employees_step3.php", function(data){
+						$("#Step3").html(data);
+					});
+				}
                 $("#previous").val("step2");
+                $("#next").val("step4");
+                $('#all_steps a[href="#Step3"]').tab('show');
+				
+				//Set the date
+				$("#date").val($("#datepicker").val());	
+			} else if ($("#next").val() == "step4"){ //In Step 3 to Step4
+				//Do some code here to make sure step2 forms is filled//
+				
+                $("#previous").val("step3");
                 $("#next").val("generate");
                 $("#next").text("Generate");
-                $('#all_steps a[href="#Step3"]').tab('show');
-            } else if($("#next").val() == "generate"){
+                $('#all_steps a[href="#Step4"]').tab('show');	
+            } else if($("#next").val() == "generate"){ //In Step 4 to Generation
+				//Ensures a radio button is checked before generating
+				if ($("#webview").is(":checked")  == true) {
+                }else if ($("#pdfview").is(":checked") == true){
+				}else if ($("#dpdfview").is(":checked") == true){
+                } else {
+                    //neither selected
+                    alert("Please select a view type");
+                    return;
+                }
+				
                 //our form's submit will be called here here.
-                document.getElementById("form_generate").submit();
+                if (report_type == "Sales") {
+                    document.getElementById("form_generate").action = "printables_process_sales_report.php";
+					document.getElementById("form_generate").submit();
+                }else if (report_type == "Employees"){
+                    document.getElementById("form_generate").action = "printables_process_employees_report.php";
+					document.getElementById("form_generate").submit();
+                }
             }
         });
     </script>
-        <!-- Main Body End -->
+
 <?php
-include "includes/footer_empty.php";
+require_once "includes/footer_empty.php";
 ?>

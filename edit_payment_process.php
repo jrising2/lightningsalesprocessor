@@ -6,7 +6,7 @@ session_start();
 //this form still needs a lot of error checking/validation
 global $link;
 $nameoncard = $link->real_escape_string($_POST['nameoncard']);
-$cardnum = $link->real_escape_string($_POST['cardnumber']);
+$cardnum = encrypt($link->real_escape_string($_POST['cardnumber']), {$_SESSION['id']});
 $month = $link->real_escape_string($_POST['month']);
 $year = $link->real_escape_string($_POST['year']);
 $add1 = $link->real_escape_string($_POST['add1']);
@@ -16,9 +16,9 @@ $city = $link->real_escape_string($_POST['city']);
 $zip = $link->real_escape_string($_POST['zip']);
 $bid = $_POST['bid'];
 
-echo '<form name="return" id="return" action="edit_payment.php?" method="POST">
-        <input type="hidden" name="payment" id="payment" value="{$bid}"/>
-        <input type="hidden" name="error" id="error" value="" />
+echo '<form id="return" action="edit_payment.php?" method="POST">
+        <input type="hidden" id="payment" value="{$bid}"/>
+        <input type="hidden" id="error" value="" />
     </form>';
 
 echo $bid;
@@ -31,14 +31,6 @@ if ($bid == "") {
         header("Location: account.php");
     } else {
         //do some code for unsuccessful entry
-        ?>
-        <script type="text/javascript">
-            var sub = document.getElementById("error");
-            sub.value = "1"
-            //call submit on the form with the selected button
-            document.getElementById("return").submit();
-        </script>
-        <?
     }
 }else {
     $updatebilling = "UPDATE Billing SET NameOnCard='{$nameoncard}', CardNumber='{$cardnum}', CardExpirationMonth={$month}, CardExpirationYear={$year}, BillingAddress1='{$add1}', BillingAddress2='{$add2}', State='{$state}', City='{$city}', ZipCode='{$zip}' WHERE BillingID={$bid}";
@@ -48,17 +40,7 @@ if ($bid == "") {
         header("Location: account.php");
     } else {
         //do some code for unsuccessful entry
-        ?>
-        <script type="text/javascript">
-            var sub = document.getElementById("error");
-            sub.value = "2";
-            //call submit on the form with the selected button
-            document.getElementById("return").submit();
-        </script>
-        <?
     }
 }
-
-//unsuccesful commit some validation errors (will add validation later)
 
 ?>
