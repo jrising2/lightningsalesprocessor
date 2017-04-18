@@ -17,9 +17,9 @@ function edit_add() {
     //check if the product exist in the database already
     $result = mysqli_query($link, "SELECT ProductID FROM Products WHERE ProductID={$pid}");
     if(mysqli_num_rows($result) > 0) {
-        $qry = "UPDATE Products SET ProductID = {$pid}, ProductName = '{$pname}', ISBN = '{$isbn}', Stock = {$stock} WHERE ProductID={$pid}";
+        $qry = "UPDATE Products SET ProductName = '{$pname}', ISBN = '{$isbn}', Stock = {$stock} WHERE ProductID={$pid}";
     }else {
-        $qry = "INSERT INTO Products(ProductID, ProductName, ISBN, Stock) VALUES ({$pid}, '{$pname}', '{$isbn}', {$stock})";
+        $qry = "INSERT INTO Products(ProductName, ISBN, Stock) VALUES ('{$pname}', '{$isbn}', {$stock})";
     }
     //execute either an update or an insert depending on above result
     if (mysqli_query($link, $qry)) {

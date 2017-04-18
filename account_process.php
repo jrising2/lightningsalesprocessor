@@ -1,8 +1,10 @@
 <!--PHP for Account Summary page -->
 <?php
 include_once "includes/database.php";
-include_once "include/functions.php";
-session_start();
+include_once "includes/functions.php";
+if (session_status() != PHP_SESSION_ACTIVE) {
+	session_start();
+}
 
 //global variables
 $account_summary_info;
@@ -44,10 +46,6 @@ function fillAccountSummary() {
 		<tr>
 			<th scope="row">Email</th>
 			<td>{$row['Email']}</td>
-		</tr>
-		<tr>
-			<th scope="row">Phone Number</th>
-			<td>{$row['PhoneNumber']}</td>
 		</tr>
 		<tr>
 			<th scope="row">Shipping Address</th>
@@ -126,21 +124,36 @@ EOD;
 ?>
 <script type="text/javascript">
 function edit(item) {
+	console.log("something happens")
     //Change the id of the selected button so that it can be seen in post
-    var sub = document.getElementById("payment_" + item);
-    sub.name ="payment";
-    sub.id = "payment";
+    var sub = document.getElementById("payment_edit_" + item);
+    sub.name ="payment_edit";
+    sub.id = "payment_edit";
     //call submit on the form with the selected button
-    document.getElementById("form_" + item).submit();
+    document.getElementById("form_edit_" + item).submit();
 
 };
+function delete_it(item) {
+	var txt;
+	var r = confirm("Continue with the delete");
+	if (r == true) {
+		//Change the id of the selected button so that it can be seen in post
+		var del = document.getElementById("payment_delete_" + item);
+		del.name ="payment_delete";
+		del.id = "payment_delete";
+		//call submit on the form with the selected button
+		document.getElementById("form_delete_" + item).submit();
+	} else {
+		
+	}
+}
 </script>
 <?php
 function fillPaymentInfo() {
 	$num_rows = mysqli_num_rows($GLOBALS['payment_info']);
 	for ($i = 0; $i < $num_rows; $i++) {
     	$row = mysqli_fetch_assoc($GLOBALS['payment_info']);
-    	$cn = decrypt($row['CardNumber'], {$_SESSION['id']});
+    	$cn = decrypt($row['CardNumber'], $_SESSION['id']);
     	$size = strlen($cn);
     	$four_digits = str_split($cn, $size - 4);
         $BAddress2 = conditionAddress($row['BillingAddress2']);
@@ -158,14 +171,16 @@ function fillPaymentInfo() {
     			<br>{$row['BillingAddress1']}
     			<br>{$BAddress2}
     			{$row['City']}, {$row['State']}, {$row['ZipCode']}
-				<form id="form_{$row['BillingID']}" action="delete_payment.php" method="POST">
-                    <input type="hidden" id="payment_{$row['BillingID']}" value="{$row['BillingID']}"/>
+				<form id="form_edit_{$row['BillingID']}" action="edit_payment.php" method="POST">
+                    <input type="hidden" id="payment_edit_{$row['BillingID']}" value="{$row['BillingID']}"/>
                 </form>
-                <form id="form_{$row['BillingID']}" action="edit_payment.php" method="POST">
-                    <input type="hidden" id="payment_{$row['BillingID']}" value="{$row['BillingID']}"/>
+                <form id="form_delete_{$row['BillingID']}" action="delete_payment.php" method="POST">
+                    <input type="hidden" id="payment_delete_{$row['BillingID']}" value="{$row['BillingID']}"/>
                 </form>
-				<button onClick="delete({$row['BillingID']})" type="button" class="btn btn-primary btn-md pull-right">Delete</button>
-                <button onClick="edit({$row['BillingID']})" type="button" class="btn btn-primary btn-md pull-right">Edit</button>
+				<div class="btn-group pull-right">
+					<button onClick="delete_it({$row['BillingID']})" type="button" class="btn btn-primary">Delete</button>
+					<button onClick="edit({$row['BillingID']})" type="button" class="btn btn-primary">Edit</button>
+				</div>
             </div>
     	</div>
 EOD;

@@ -1,18 +1,13 @@
 <?php
 include "../includes/database.php";
 include "includes/employee_header.php";
-?>
-        <!--Main body to seperate employee_header-->
-        <!-- As stated on the edit_employee_info page, this page is setup the same,
-        with the exception of names being slightly different. -->
 
-        <?php
 		//Check if the person is logged in before allowing page access
 		if (isset($_SESSION['eid']) == false) {
 			header("Location: index.php");
 		}
         //Get current employee role
-        $ROLE;
+        $ROLE = "";
         $temp = mysqli_query($link, "SELECT Role FROM Employees WHERE EmployeeID={$_SESSION['eid']}");
         if (mysqli_num_rows($temp) > 0) {
             $r = mysqli_fetch_assoc($temp);
@@ -33,14 +28,10 @@ include "includes/employee_header.php";
 
         //Get information from super globals
         $ID = (!isset($_GET['product']))? "" : $_GET['product'];
-        $ERROR;
-        $SUCCESS;
-        if (isset($_GET['error'])) {
-            $ERROR = $_GET['error'];
-        }
-        if (isset($_GET['redirect_success'])) {
-            $SUCCESS = $_GET['redirect_success'];
-        }
+        $ERROR = "";
+        $SUCCESS = "";
+        if (isset($_GET['error'])) $ERROR = $_GET['error'];
+        if (isset($_GET['redirect_success'])) $SUCCESS = $_GET['redirect_success'];
 
         $qry = "SELECT ProductID, ProductName, ISBN, Stock FROM Products";
         if ($ID != "") {
@@ -100,21 +91,10 @@ include "includes/employee_header.php";
             <div class="row">
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="prodid">Product ID:</label>
-                        <?php
-                            if ($ID != "") {
-                                echo '<input type="text" class="form-control" name="prodid" style="width:263px" value="'. $row['ProductID'] .'">';
-                            } else {
-                                 echo '<input type="text" class="form-control" name="prodid" style="width:263px">';
-                            }
-                        ?>
-                    </div>
-                </div>
-
-                <div class="col-md-3">
-                    <div class="form-group">
                         <label for="title">Title:</label>
                         <?php
+							//hidden form for product id;
+							echo '<input type="text" class="hidden" name="prodid" style="width:263px" value="'. $row['ProductID'] .'">';
                             if ($ID != "") {
                                 echo '<input type="text" class="form-control" name="title" style="width:263px" value="'. $row['ProductName'] .'">';
                             } else {
@@ -176,7 +156,8 @@ include "includes/employee_header.php";
                         }
                     }
                 </script>
-                <div class="col-md-6" style="text-align:right">
+                <div class="col-md-3" style="text-align:right">
+					<br>
                     <button type="submit" class="btn btn-default">Submit</button>
                 </div>
             </div>

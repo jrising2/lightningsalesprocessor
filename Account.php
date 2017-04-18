@@ -1,10 +1,17 @@
 <?php
+include_once "includes/header.php";
 include_once "account_process.php";
 loadInformation();
-include_once "includes/header.php";
 //Check if the person is logged in before allowing page access
 if (isset($_SESSION['id']) == false) {
 	header("Location: login.php");
+}
+$ERROR = "";
+if(isset($_GET['error'])) $ERROR = $_GET['error'];
+if ($ERROR == "1"){
+    echo  '<div class="alert alert-danger" role="alert">
+            <strong>System Error: </strong>Error deleting your payment information.
+        </div>';
 }
 ?>
 

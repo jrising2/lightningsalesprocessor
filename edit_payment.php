@@ -8,14 +8,18 @@ if (isset($_SESSION['id']) == false) {
 }
 
 global $link;
-$card = $_POST['payment'];
+//gets error if one occurs
+$card = "";
+if (isset($_POST['payment_edit'])) $card = $_POST['payment_edit'];
+
+
 if ($card != "") {
     $qryAccountInfo = "SELECT NameOnCard, CardNumber, CardExpirationMonth, CardExpirationYear, BillingAddress1, BillingAddress2, City, State, ZipCode FROM Billing WHERE BillingID={$card}";
     $account_info = mysqli_query($link, $qryAccountInfo);
     $row = mysqli_fetch_assoc($account_info);
 }
 
-$ERROR;
+$ERROR = "";
 if (isset($_POST['error'])) {
     $ERROR = $_POST['error'];
 }
@@ -191,13 +195,13 @@ if ($ERROR == "1"){
                     <?php
                         echo "<input type='hidden' name='bid' value='{$card}'>";
                     ?>
-                <?php
-                if ($card == "") {
-                    echo '<div align="right"><button type="submit" class="btn btn-primary btn-block" style="width:150px">Confirm</button></div>';
-                }else {
-                    echo '<div align="right"><button type="submit" class="btn btn-primary btn-block" style="width:150px">Confirm Changes</button></div>';
-                }
-                ?>
+					<?php
+					if ($card == "") {
+						echo '<div align="right"><button type="submit" class="btn btn-primary btn-block" style="width:150px">Confirm</button></div>';
+					}else {
+						echo '<div align="right"><button type="submit" class="btn btn-primary btn-block" style="width:150px">Confirm Changes</button></div>';
+					}
+					?>
         </form>
     </div>
     <div class="col-md-2"></div>
