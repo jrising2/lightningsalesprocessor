@@ -11,7 +11,6 @@ $email = $link->real_escape_string($_POST['email']);
 $add1 = $link->real_escape_string($_POST['add1']);
 $add2 = $link->real_escape_string($_POST['add2']);
 $state = $_POST['state'];
-
 $city = $link->real_escape_string($_POST['city']);
 $zip = $link->real_escape_string($_POST['zip']);
 

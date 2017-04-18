@@ -1,6 +1,7 @@
 <!--PHP for Account Summary page -->
 <?php
 include_once "includes/database.php";
+include_once "include/functions.php";
 session_start();
 
 //global variables
@@ -124,7 +125,7 @@ EOD;
 }
 ?>
 <script type="text/javascript">
-function changeValue(item) {
+function edit(item) {
     //Change the id of the selected button so that it can be seen in post
     var sub = document.getElementById("payment_" + item);
     sub.name ="payment";
@@ -139,7 +140,7 @@ function fillPaymentInfo() {
 	$num_rows = mysqli_num_rows($GLOBALS['payment_info']);
 	for ($i = 0; $i < $num_rows; $i++) {
     	$row = mysqli_fetch_assoc($GLOBALS['payment_info']);
-    	$cn = $row['CardNumber'];
+    	$cn = decrypt($row['CardNumber'], {$_SESSION['id']});
     	$size = strlen($cn);
     	$four_digits = str_split($cn, $size - 4);
         $BAddress2 = conditionAddress($row['BillingAddress2']);
@@ -157,10 +158,14 @@ function fillPaymentInfo() {
     			<br>{$row['BillingAddress1']}
     			<br>{$BAddress2}
     			{$row['City']}, {$row['State']}, {$row['ZipCode']}
+				<form id="form_{$row['BillingID']}" action="delete_payment.php" method="POST">
+                    <input type="hidden" id="payment_{$row['BillingID']}" value="{$row['BillingID']}"/>
+                </form>
                 <form id="form_{$row['BillingID']}" action="edit_payment.php" method="POST">
                     <input type="hidden" id="payment_{$row['BillingID']}" value="{$row['BillingID']}"/>
                 </form>
-                <button onClick="changeValue({$row['BillingID']})" type="button" class="btn btn-primary btn-md pull-right">Edit</button>
+				<button onClick="delete({$row['BillingID']})" type="button" class="btn btn-primary btn-md pull-right">Delete</button>
+                <button onClick="edit({$row['BillingID']})" type="button" class="btn btn-primary btn-md pull-right">Edit</button>
             </div>
     	</div>
 EOD;
