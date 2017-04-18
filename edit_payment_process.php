@@ -7,12 +7,12 @@ session_start();
 //this form still needs a lot of error checking/validation
 global $link;
 $nameoncard = $link->real_escape_string($_POST['nameoncard']);
-$cardnum = encrypt($link->real_escape_string($_POST['cardnumber']), $_SESSION['id']);
+$cardnum = encrypt($_POST['cardnumber'], $_SESSION['id']);
 $month = $link->real_escape_string($_POST['month']);
 $year = $link->real_escape_string($_POST['year']);
 $add1 = $link->real_escape_string($_POST['add1']);
 $add2 = $link->real_escape_string($_POST['add2']);
-$state = $link->real_escape_string($_POST['state']);
+$state = $_POST['state'];
 $city = $link->real_escape_string($_POST['city']);
 $zip = $link->real_escape_string($_POST['zip']);
 $bid = $_POST['bid'];
@@ -21,8 +21,6 @@ echo '<form id="return" action="edit_payment.php?" method="POST">
         <input type="hidden" id="payment" value="{$bid}"/>
         <input type="hidden" id="error" value="" />
     </form>';
-
-echo $bid;
 
 if ($bid == "") {
     $addbilling = "INSERT INTO Billing(CustomerID, NameOnCard, CardNumber, CardExpirationMonth, CardExpirationYear, BillingAddress1, BillingAddress2, State, City, ZipCode) VALUES({$_SESSION['id']},'{$nameoncard}', '{$cardnum}', {$month}, {$year}, '{$add1}', '{$add2}', '{$state}', '{$city}', '{$zip}')";
@@ -43,5 +41,4 @@ if ($bid == "") {
         //do some code for unsuccessful entry
     }
 }
-
 ?>

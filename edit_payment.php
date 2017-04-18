@@ -1,6 +1,7 @@
 <?php
 include_once "includes/header.php";
 include_once "includes/database.php";
+include_once "includes/functions.php";
 //date_default_timezone_set()
 //Check if the person is logged in before allowing page access
 if (isset($_SESSION['id']) == false) {
@@ -12,7 +13,7 @@ global $link;
 $card = "";
 if (isset($_POST['payment_edit'])) $card = $_POST['payment_edit'];
 
-
+$row = null;
 if ($card != "") {
     $qryAccountInfo = "SELECT NameOnCard, CardNumber, CardExpirationMonth, CardExpirationYear, BillingAddress1, BillingAddress2, City, State, ZipCode FROM Billing WHERE BillingID={$card}";
     $account_info = mysqli_query($link, $qryAccountInfo);
@@ -62,7 +63,8 @@ if ($ERROR == "1"){
                             if ($card == "") {
                                 echo '<input class="form-control" type="text" name="cardnumber">';
                             }else {
-                                echo '<input class="form-control" type="text" value="' . $row['CardNumber'] .'" name="cardnumber">';
+								$cn = decrypt($row['CardNumber'], $_SESSION['id']);
+                                echo '<input class="form-control" type="text" value="' . $cn .'" name="cardnumber">';
                             }
                             ?>
                         </div>
@@ -170,9 +172,9 @@ if ($ERROR == "1"){
                                     }else{
                                         for ($i = 0; $i < 50; $i++) {
                                             if (strtolower($st[$i]) == strtolower($row['State'])) {
-                                                echo "<option value=" . $st[$i] . " selected>" . $st[$i] . "</option>";
+                                                echo "<option value='" . $st[$i] . "' selected>" . $st[$i] . "</option>";
                                             } else {
-                                                echo "<option value=" . $st[$i] . ">" . $st[$i] . "</option>";
+                                                echo "<option value='" . $st[$i] . "'>" . $st[$i] . "</option>";
                                             }
                                         }
                                     }
