@@ -43,7 +43,7 @@ include_once "includes/header.php";
       </tr>
       <tr>
         <td>Joshua Rising</td>
-        <td>july@example.com</td>
+        <td>Order tracking and management pages.</td>
       </tr>
     </tbody>
   </table>
