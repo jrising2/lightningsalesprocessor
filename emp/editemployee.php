@@ -1,13 +1,7 @@
-<?php 
+<?php
 include('includes/employee_header.php'); 
 include "../includes/database.php";
 ?>
-
-<!-- 
-	Changes I still have to make:
-	- Passwords
-	- Access rights
--->
 
 <div class="row">
 	<div class="col-md-12">
@@ -18,8 +12,7 @@ include "../includes/database.php";
 
 <?php 
 	$error = "";
-	$isValid = true;
-	$value = "";	
+	$isValid = true;	
 	
 	function check($input){
 		$input = trim($input);
@@ -49,15 +42,18 @@ include "../includes/database.php";
 		}
 					
 		if($isValid){
+			$Pass = $_POST['Password'];
+			$Salt = sha1(md5($Pass));
+			$Pass = md5($Pass.$Salt);
+			// ADD EMPLOYEE
 			if(isset($_POST['btnAdd'])){
-				$Pass = md5($_POST['Password']);
 				$sql = "INSERT INTO Employees (FirstName, LastName, Role, Password) VALUES (?,?,?,?)";
 				$stmt = mysqli_prepare($link, $sql);
 				$stmt->bind_param("ssss", $_POST['FirstName'], $_POST['LastName'], $_POST['Role'], $Pass);
 				$stmt->execute();
 				$stmt->close();
+			// EDIT EMPLOYEE 
 			}else if(isset($_POST['btnSubmitEdit'])){
-				$Pass = md5($_POST['Password']);
 				$stmt = $link->prepare("UPDATE Employees SET FirstName = ?, LastName = ?, Role = ?, Password = ? WHERE EmployeeID = ?");
 				$stmt->bind_param("sssss", $_POST['FirstName'], $_POST['LastName'], $_POST['Role'], $Pass, $_POST['EmployeeID']);
 				$stmt->execute();
@@ -99,17 +95,19 @@ include "../includes/database.php";
 			<div class="form-group">
 				<label for="role">Role:</label><br />
 				<?php 
-					$query = "SELECT RoleID, RoleName FROM Role";
+					$query = "SELECT RolesID, RoleName FROM Roles";
 					$result = mysqli_query($link, $query);
 
-					echo "<select name='Role' style='width:263px'>";
-					echo '<option value="">---- Select A Role ----</option>';
+					echo '<div class="form-group">';					
+					echo '<select class="form-control" name="Role">';
+					echo '<option value="">--- Select A Role ---</option>';
 					while($row = mysqli_fetch_array($result)){
-						$ID = $row['RoleID'];
+						$ID = $row['RolesID'];
 						$Role = $row['RoleName'];
 						echo "<option value='$ID'>$Role</option>";
 					}
-					echo "</select>";
+					echo '</select>';
+					echo '</div>';
 				?>
 			</div>
 		</div>
@@ -144,7 +142,7 @@ include "../includes/database.php";
 <hr />
 			
 <div id="employeeTable" class="row">
-	<!-- Display employees ---------- -->
+	<!-- Display employees -->
 	<div class="col-md-8">
 		<h3>Employees</h3>
 		<div class="row" style="padding-left:15px">
@@ -158,7 +156,7 @@ include "../includes/database.php";
 					<th>Edit Employees</th>
 				</tr>
 				<?php
-					$query = "SELECT EmployeeID, FirstName, LastName, Role, RoleName FROM Employees INNER JOIN Role ON Employees.Role = Role.RoleID";
+					$query = "SELECT EmployeeID, FirstName, LastName, Role, RoleName FROM Employees INNER JOIN Roles ON Employees.Role = Roles.RolesID";
 					$result = mysqli_query($link, $query);
 
 					while($row = mysqli_fetch_array($result)){
@@ -170,7 +168,7 @@ include "../includes/database.php";
 						
 						echo "<tr>";
 						echo "<td> $EmployeeID </td>";
-						echo "<td> <a href='editemployee.php'>$FName $LName</a> </td>";
+						echo "<td> $FName $LName </td>";
 						echo "<td> $RoleName </td>";
 			
 						if($Role == "1"){
@@ -214,7 +212,7 @@ include "../includes/database.php";
 				if(isset($_POST['btnEmpIDEdit'])){
 					$check = $link->real_escape_string($_POST['editemp']);
 					$sql = $link->query("SELECT EmployeeID, FirstName, LastName, Role, Password, RoleName 
-						FROM Employees INNER JOIN Role ON Role.RoleID = Employees.Role
+						FROM Employees INNER JOIN Roles ON Roles.RolesID = Employees.Role
 						WHERE EmployeeID LIKE '$check'");
 						
 					if($sql->num_rows > 0){
@@ -241,17 +239,19 @@ include "../includes/database.php";
 							
 					<label>Role:</label><br />
 					<?php 
-						$query = "SELECT RoleID, RoleName FROM Role";
+						$query = "SELECT RolesID, RoleName FROM Roles";
 						$result = mysqli_query($link, $query);
 
-						echo "<select name='Role' style='width:263px'>";
-						echo '<option value="">-- Select A Role --</option>';
+						echo '<div class="form-group">';					
+						echo '<select class="form-control" name="Role" style="width:350px">';
+						echo "<option value=''>--- Select Employee's Role ---</option>";
 						while($row = mysqli_fetch_array($result)){
-							$ID = $row['RoleID'];
+							$ID = $row['RolesID'];
 							$Role = $row['RoleName'];
 							echo "<option value='$ID'>$Role</option>";
 						}
-						echo "</select>";
+						echo '</select>';
+						echo '</div>';
 					?>
 					<br />
 					<small class="form-text text-muted">Please select a role.</small><br /><br />
@@ -303,7 +303,7 @@ include "../includes/database.php";
 				if(isset($_POST['btnVerifyDel'])){
 					$check = $link->real_escape_string($_POST['verifydel']);
 					$sql = $link->query("SELECT EmployeeID, FirstName, LastName, RoleName  
-						FROM Employees INNER JOIN Role ON Employees.Role = Role.RoleID 
+						FROM Employees INNER JOIN Roles ON Employees.Role = Roles.RolesID 
 						WHERE EmployeeID LIKE '$check'");
 		
 					if($sql->num_rows > 0){
