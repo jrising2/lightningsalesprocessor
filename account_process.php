@@ -17,9 +17,9 @@ function loadInformation() {
     global $link;
 	//Queries to be called
 	$qryAccSummary = "SELECT FirstName, LastName, Address1, Address2, City, State, ZipCode, Email FROM Customers WHERE CustomerID={$_SESSION['id']}";
-	$qryUserTransactions = "SELECT Transactions.ProductID, ProductName, ISBN, Description, Price, TransactionID, DeliveryType, Quantity, LineItemTotal, GrandTotal, `Timestamp`, `Status` FROM Products LEFT JOIN Transactions ON Products.ProductID=Transactions.ProductID WHERE CustomerID={$_SESSION['id']} ORDER BY Transactions.TransactionID DESC LIMIT 10";
+	$qryUserTransactions = "SELECT GROUP_CONCAT(Transactions.ProductID), GROUP_CONCAT(ProductName), GROUP_CONCAT(ISBN), GROUP_CONCAT(Description), GROUP_CONCAT(Price), GROUP_CONCAT(TransactionID), DeliveryType, GROUP_CONCAT(Quantity), GROUP_CONCAT(LineItemTotal), GrandTotal, `Timestamp`, `Status` FROM Transactions LEFT JOIN Products ON Transactions.ProductID=Products.ProductID WHERE CustomerID={$_SESSION['id']} GROUP BY TransactionID DESC LIMIT 5";
 	$qryPaymentInformation = "SELECT BillingID, NameOnCard, CardNumber, CardExpirationMonth, CardExpirationYear, BillingAddress1, BillingAddress2, City, State, ZipCode From Billing Where CustomerID={$_SESSION['id']}";
-    //Querying
+	//Querying
     $GLOBALS['account_summary_info'] = mysqli_query($link, $qryAccSummary);
 	$GLOBALS['transactions_info'] = mysqli_query($link, $qryUserTransactions);
 	$GLOBALS['payment_info'] = mysqli_query($link, $qryPaymentInformation);
@@ -63,51 +63,55 @@ EOD;
 
 function fillTransactions() {
     $num_rows = mysqli_num_rows($GLOBALS['transactions_info']);
+	$rows = mysqli_fetch_all($GLOBALS['transactions_info'], MYSQLI_BOTH);
 	for ($i = 0; $i < $num_rows; $i++) {
-    	$row = mysqli_fetch_assoc($GLOBALS['transactions_info']);
+		$row = $rows[$i];
+		$transaction_ids = explode(",", $row['GROUP_CONCAT(TransactionID)']);
         //Print out the panel header for a single order
         $html = <<<EOD
     	<div class="panel panel-default">
     		<div class="panel-heading">
     			<div class="row">
-    				<div class="col-md-4"><span style="font-weight:bold;">#OrderID:</span><br>{$row['TransactionID']}</div>
+    				<div class="col-md-4"><span style="font-weight:bold;">#OrderID:</span><br>{$transaction_ids[0]}</div>
                     <div class="col-md-4"><span style="font-weight:bold;">Delivery Method:</span><br>{$row['DeliveryType']}</div>
 					<div class="col-md-4"><span style="font-weight:bold;">Date Ordered:</span><br>{$row['Timestamp']}</div>
     			</div>
     		</div>
 EOD;
         echo $html;
-    	$previousID = $row['TransactionID'];
-    	$currentID = $row['TransactionID'];
+
         //Print out all the items in a single transaction
-    	while ($previousID == $currentID) {
+		$num_items = count($transaction_ids);
+		$product_ids = explode(",", $row['GROUP_CONCAT(Transactions.ProductID)']);
+		$product_names = explode(",", $row['GROUP_CONCAT(ProductName)']);
+		$isbns = explode(",", $row['GROUP_CONCAT(ISBN)']);
+		$prices = explode(",", $row['GROUP_CONCAT(Price)']);
+		$quantities = explode(",", $row['GROUP_CONCAT(Quantity)']);
+		$line_totals = explode(",", $row['GROUP_CONCAT(LineItemTotal)']);
+		$descriptions = explode(",", $row['GROUP_CONCAT(Description)']);
+    	for ($j = 0; $j < $num_items; $j++) {
     		$html = <<<EOD
             <div class="panel-body">
 				<div class="row">
-					<div class="col-md-9" style="font-weight:bold">{$row['ProductName']}</div>
+					<div class="col-md-9" style="font-weight:bold">{$product_names[$j]}</div>
 				</div>
     			<div class="row">
-    				<div class="col-md-2"><a href="productpage.php?id={$row['ProductID']}"><img src="image/{$row['ISBN']}.jpg" alt="Insert Image here" width="100" height="100"/></a></div>
+    				<div class="col-md-2"><a href="productpage.php?id={$product_ids[$j]}"><img src="image/{$isbns[$j]}.jpg" alt="Insert Image here" width="100" height="100"/></a></div>
     				<div class="col-md-10">
     					<div class="row">
-    						<div class ="col-md-2"><p><span style="font-weight:bold;">Price</span><br>$ {$row['Price']}</p></div>
-    						<div class="col-md-2"> <p><span style="font-weight:bold;">Quantity</span><br>x{$row['Quantity']}</p></div>
-    						<div class="col-md-2"> <p><span style="font-weight:bold;">Total</span><br>$ {$row['LineItemTotal']}</p></div>
+    						<div class ="col-md-2"><p><span style="font-weight:bold;">Price</span><br>$ {$prices[$j]}</p></div>
+    						<div class="col-md-2"> <p><span style="font-weight:bold;">Quantity</span><br>x{$quantities[$j]}</p></div>
+    						<div class="col-md-2"> <p><span style="font-weight:bold;">Total</span><br>$ {$line_totals[$j]}</p></div>
     						<div class ="col-md-2"><p><span style="font-weight:bold;">Status</span><br>{$row['Status']}</p></div>
     					</div>
     					<div class="row">
-    						<div class="col-md-8"> <pre>{$row['Description']}</pre></div>
+    						<div class="col-md-8"> <pre>{$descriptions[$j]}</pre></div>
     					</div>
     				</div>
     			</div>
     		</div>
 EOD;
             echo ($html);
-            $i++;
-            if ($i == $num_rows) break;
-    	    $previousID = $currentID;
-    	    $row = mysqli_fetch_assoc($GLOBALS['transactions_info']);
-    	    $currentID = $row['TransactionID'];
     	}
         //final echo for grand total
         echo "<div class='panel-body'>
