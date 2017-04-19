@@ -2,6 +2,7 @@
 
 include('tracking_funcs.php');
 
+// A simple function to get the maximum number of roders with the given status. Used to calculate paginations.
 function getMaxOrders($status = "Open"){
     if($status != "All"){
         $transactionNumbers = queryDB("TransactionID, Status","Transactions","Status = '".$status."' GROUP BY TransactionID",500);
@@ -10,15 +11,13 @@ function getMaxOrders($status = "Open"){
 
     }
     return $transactionNumbers->num_rows;
-//    $transactionNumbers = $transactionNumbers->fetch_all(MYSQLI_NUM);
-//    $maxIndex = max(array_keys($transactionNumbers));
-//    return $transactionNumbers[$maxIndex][0];
 }
 
+// Outputs a row of a table with various order information.
 function displayOrder($transID){
     $orderData = queryDB("*","Transactions","TransactionID = ".$transID);
     $orderData = $orderData->fetch_assoc();
-    $row = '<tr><td>'.$orderData['TransactionID'].
+    $row = '<tr><td><a href=orders.php?id='.$orderData['TransactionID'].'>'.$orderData['TransactionID'].'</a>'.
            '</td><td>'.$orderData['CustomerID'].
            '</td><td>'.$orderData['Status'].
            '</td><td>'.$orderData['DeliveryType'].'</td></tr>';
@@ -26,6 +25,7 @@ function displayOrder($transID){
     echo $row;
 }
 
+// Displays the current page of orders in the main tab of orders.php
 function displayPage($pageNumber, $stat = "Open", $displayCount = 20){
     $pageNumber = $pageNumber - 1;
     $startNumber = $pageNumber * $displayCount;
@@ -45,6 +45,7 @@ function displayPage($pageNumber, $stat = "Open", $displayCount = 20){
     echo '</table>';
 }
 
+// Displays the pagination at the bottom
 function pageNumbers($status = "Open", $displayCount = 20){
     $max = getMaxOrders($status);
     $numberOfPages = ceil($max / $displayCount);
@@ -62,4 +63,28 @@ function pageNumbers($status = "Open", $displayCount = 20){
             echo '<li><a href="orders.php?page='.$i.'">'.$i.'</a></li>';
         }
     }
+}
+
+// Displays the entire table with the employees and their current orders
+function displayEmployeeOrders(){
+    $employees = queryDB("EmployeeID, FirstName, LastName","Employees","TRUE");
+    echo '<table class="table table-condensed">';
+    echo '<tr><th>Employee</th><th>Current State</th><th>Current Order</th></tr>';
+
+    foreach($employees as $currentEmployee){
+        $currentOrder = queryDB("TransactionID, EmployeeID, Status","Transactions","Status = 'Assigned' AND EmployeeID = ".$currentEmployee['EmployeeID']);
+        // If there was a result in the currentOrder query, then the employee must have an order otherwise display them as open
+        if($currentOrder->num_rows){
+            $currentOrder = $currentOrder->fetch_assoc();
+            $row = '<tr><td>'.$currentEmployee['FirstName'].' '.$currentEmployee['LastName'].
+                '</td><td>'.'Assigned'.
+                '</td><td><a href="orders.php?id='.$currentOrder['TransactionID'].'">'.$currentOrder['TransactionID'].'</a>'.'</td></tr>';
+        }else{
+            $row = '<tr><td>'.$currentEmployee['FirstName'].' '.$currentEmployee['LastName'].
+                '</td><td>'.'Open'.
+                '</td><td></td></tr>';
+        }
+        echo $row;
+    }
+    echo '</table>';
 }
