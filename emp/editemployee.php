@@ -1,17 +1,6 @@
 <?php
 include('includes/employee_header.php'); 
 include "../includes/database.php";
-// Checks to see if employee is allowed access.
-$Role = "";
-$sql = $link->query("SELECT Role FROM Employees WHERE EmployeeID={$_SESSION['eid']}");
-if ($sql->num_rows > 0) {
-	$rid = $sql->fetch_assoc();
-	$Role = $rid['Role'];
-}
-if ($Role == "1") {
-}else{
-	header("Location: tracking.php");
-}
 ?>
 
 <div class="row">
