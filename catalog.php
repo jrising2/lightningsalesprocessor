@@ -1,17 +1,15 @@
 <?php
 include('includes/database.php');
 include('includes/header.php');
-?>
 
-    <?//PHP to generate pagination links
         //database  link
         global $link;
         //Catalog Globals
-        $qry; //current search qry by default will qry all items
+        $qry = ""; //current search qry by default will qry all items
         $result;  //result of the above qry (may need to be page_results)
         $rows; //a collection of all the rows to be fetched by the result of the qry
         $maxItemCount = 8; //maximum number of items to be displayed in a page
-        $totalPages; //Total number of pages given the current search qry
+        $totalPages = 0; //Total number of pages given the current search qry
 
         //Get information from super globals
         $page = (!isset($_GET['page']))? 1 : $_GET['page'];
@@ -30,14 +28,12 @@ include('includes/header.php');
         for ($i = 0; $i < $totalPages; $i++) {
             $links[$i] = 'catalog.php?search=' . $search .'&page=' . ($i + 1);
         }
-    ?>
-
-    <?php //PHP to generate catalog body
-    $curPage_itemCount;
-    $qry = $qry . " LIMIT {$maxItemCount} OFFSET {$offset}";
-    $result = mysqli_query($link, $qry);
-    $rows = mysqli_fetch_all($result, MYSQLI_BOTH);
-    $curPage_itemCount = mysqli_num_rows($result);
+		
+		$curPage_itemCount;
+		$qry = $qry . " LIMIT {$maxItemCount} OFFSET {$offset}";
+		$result = mysqli_query($link, $qry);
+		$rows = mysqli_fetch_all($result, MYSQLI_BOTH);
+		$curPage_itemCount = mysqli_num_rows($result);
     ?>
 	<form role="form" method="POST" action="catalog_process.php">
         <div class="form-group" role="search">
@@ -61,11 +57,7 @@ include('includes/header.php');
     </form>
     <div style="text-align:center">
      <?php
-    global $rows;
-    global $maxItemCount;
-    global $result;
-    global $curPage;
-
+	 
     $rowCount=0;
     $colCount=0;
     echo '<div class="row" style="padding-left:125px">';
