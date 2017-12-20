@@ -35,7 +35,7 @@ include('includes/header.php');
 		$rows = mysqli_fetch_all($result, MYSQLI_BOTH);
 		$curPage_itemCount = mysqli_num_rows($result);
     ?>
-	<form role="form" method="POST" action="php/catalog_process.php">
+	<form role="form" method="POST" action="catalog_process.php">
         <div class="form-group" role="search">
             <div class="col-md-2"></div>
             <div class="col-md-8">

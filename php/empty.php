@@ -1,7 +1,7 @@
-<?php
-session_start();	
-	
-unset($_SESSION["cart"]);
-
-header ('location: ../cart.php');
-?>
+<?php
+session_start();	
+	
+unset($_SESSION["cart"]);
+
+header ('location: ../cart.php');
+?>

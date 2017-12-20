@@ -13,7 +13,7 @@ $maxpid = maxpid();
         <div class="row">
             <em><h3>Recently Added</h3></em><br>
             <div class="col-md-3">
-                <a href="productpage.php?id=<?php echo $maxpid; ?>"><img class="img-responsive" style="height: 20em;"  src="<?php displayImage($maxpid) ?>">
+                <a href="productpage.php?id=1"><img clas="image-responsive" src="<?php displayImage($maxpid) ?>">
                     <h4>
                         <?php
                             displayTitle($maxpid);
@@ -22,7 +22,7 @@ $maxpid = maxpid();
                 </a>
             </div>
             <div class="col-md-3">
-                <a href="productpage.php?id=<?php echo $maxpid-1; ?>"><img class="img-responsive" style="height: 20em;"  src="<?php displayImage($maxpid-1) ?>">
+                <a href="productpage.php?id=2"><img clas="image-responsive" src="<?php displayImage($maxpid-1) ?>">
                     <h4>
                         <?php
                             displayTitle($maxpid-1);
@@ -31,7 +31,7 @@ $maxpid = maxpid();
                 </a>
             </div>
             <div class="col-md-3">
-                <a href="productpage.php?id=<?php echo $maxpid-2; ?>"><img class="img-responsive" style="height: 20em;"  src="<?php displayImage($maxpid-2) ?>">
+                <a href="productpage.php?id=3"><img clas="image-responsive" src="<?php displayImage($maxpid-2) ?>">
                     <h4>
                         <?php
                             displayTitle($maxpid-2);
@@ -40,7 +40,7 @@ $maxpid = maxpid();
                 </a>
             </div>
             <div class="col-md-3">
-                <a href="productpage.php?id=<?php echo $maxpid-3; ?>"><img class="img-responsive" style="height: 20em;"  src="<?php displayImage($maxpid-3) ?>">
+                <a href="productpage.php?id=4"><img clas="image-responsive" src="<?php displayImage($maxpid-3) ?>">
                     <h4>
                         <?php
                             displayTitle($maxpid-3);
@@ -53,22 +53,22 @@ $maxpid = maxpid();
 <!--        <div class="row">-->
 <!--            <em><h3>On Sale</h3></em>-->
 <!--            <div class="col-md-3">-->
-<!--                <a href="#"><img clas="img-responsive" style="height: 20em;"  src="http://placehold.it/200x200">-->
+<!--                <a href="#"><img clas="image-responsive" src="http://placehold.it/200x200">-->
 <!--                    <p>Title <span class="text-danger">10% Off</span></p>-->
 <!--                </a>-->
 <!--            </div>-->
 <!--            <div class="col-md-3">-->
-<!--                <a href="#"><img clas="img-responsive" style="height: 20em;"  src="http://placehold.it/200x200">-->
+<!--                <a href="#"><img clas="image-responsive" src="http://placehold.it/200x200">-->
 <!--                    <p>Title <span class="text-danger">10% Off</span></p>-->
 <!--                </a>-->
 <!--            </div>-->
 <!--            <div class="col-md-3">-->
-<!--                <a href="#"><img clas="img-responsive" style="height: 20em;"  src="http://placehold.it/200x200">-->
+<!--                <a href="#"><img clas="image-responsive" src="http://placehold.it/200x200">-->
 <!--                    <p>Title <span class="text-danger">10% Off</span></p>-->
 <!--                </a>-->
 <!--            </div>-->
 <!--            <div class="col-md-3">-->
-<!--                <a href="#"><img clas="img-responsive" style="height: 20em;"  src="http://placehold.it/200x200">-->
+<!--                <a href="#"><img clas="image-responsive" src="http://placehold.it/200x200">-->
 <!--                    <p>Title <span class="text-danger">10% Off</span></p>-->
 <!--                </a>-->
 <!--            </div>-->

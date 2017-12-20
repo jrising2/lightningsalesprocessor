@@ -1,6 +1,5 @@
 <?php
-
-include_once "../config/database.php";
+include_once "../includes/database.php";
 session_start();
 
 function error($msg) {
@@ -46,12 +45,11 @@ if (!isset($_SESSION["eid"])){
     <title>Book Store</title>
 
     <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="http://bootswatch.com/paper/bootstrap.min.css">
-    <link rel="stylesheet" href="../css/callouts.css">
-    <link rel="stylesheet" href="../css/styles.css">
-    <!--CSS dependencies for report generation -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../css/callouts.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- Jquery CSS for report generation -->
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link rel="stylesheet" href="../../css/callouts.css">

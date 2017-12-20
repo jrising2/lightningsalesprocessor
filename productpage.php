@@ -1,36 +1,57 @@
 <?php
-include_once "includes/header.php";
-include_once "includes/database.php";
-include_once "includes/functions.php";
+require_once('config/database.php');
 
-$id = $_GET['id'];
-$product = productQuery($id);
+// Checks to see if the id is set
+if(isset($_GET["id"])){
+    // if it is set, make sure it is an int to be more secure
+    if(is_int($_GET["id"])){
+        $productID = $_GET["id"];
+        $query = "SELECT * FROM Products WHERE ProductID=\"".$productID."\"";
+        $result = $link->query($query);
+        $result = $result->fetch_assoc();
+    }else{ // if it isn't a int, just display the product with productID of 1
+        $productID = 1;
+        $query = "SELECT * FROM Products WHERE ProductID=\"".$productID."\"";
+        $result = $link->query($query);
+        $result = $result->fetch_assoc();
+    }
+}else{
+    echo "<h1>Product does not exist, sorry!</h1>";
+    die();
+}
+
 ?>
 
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Store</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <style>*{font-family: 'Roboto';}.inline{display:inline;}.price{color:forestgreen;margin-left: 1em;font-size: 1.45em;</style>
 </head>
 
+<body>
+    <div class="container">
+
+        <?php require("includes/header.php"); ?>
+
         <!-- Main Body Start -->
         <div class="row">
-            <div class="col-md-4"><img class="img-responsive" src=" <?php displayImage($id); ?> " ></div>
+            <div class="col-md-4"><img class="img-responsive" src="image/<?php echo $result["ISBN"]; ?>.jpg"></div>
             <div class="col-md-8">
-                <div class="row"><h1 class="inline"> <?php displayTitle($id); ?> </h1><p class="price inline"><?php displayPrice($id); ?></p></div>
+                <div class="row"><h1 class="inline"><?php echo $result["Product Name"]; ?></h1><p class="price inline">$<?php echo $result["Price"]; ?></p></div>
                 <div class="row">
-                    <form method="post" action="php/add.php?id=<?php echo $id; ?>">
-                    <?php
-                    if($product['Stock']<1){
-                        echo "<h3 style='color:red'>Out of stock</h3>";
-                    } else {
-                        echo "<input type='text' name='quantity' value='1' size='2' />";
-                        echo "<input type='submit' value='Add To Cart' class='btn btn-success btn-sm' />";
-                    }
-                    ?>
-                    </form>
+                    <a href="#" class="btn btn-success btn-sm">Add To Cart</a>
+                    <a href="#" class="btn btn-primary btn-sm">Add To Wishlist</a>
                     <hr>
                     <p>
-                        <?php if(empty($product['Description'])){echo 'No description available.';}else{echo $product['Description'];} ?>
+                        <?php echo $result["Description"]; ?>
                     </p>
                 </div>
             </div>
@@ -44,29 +65,37 @@ $product = productQuery($id);
                         <th>Property</th>
                         <th>Detail</th>
                     </tr>
-                    <tr><td>ISBN</td><td><?php echo $product['ISBN']; ?></td></tr>
-                    <tr><td>Genre</td><td><?php if(empty($product['Genre'])){ echo 'N/A'; }else{ echo $product['Genre']; }  ?></td></tr>
-                    <tr><td>Authors</td><td><?php if(empty($product['Author'])){ echo 'N/A'; }else{ echo $product['Author']; } ?></td></tr>
+                    <tr><td>ISBN</td><td><?php echo $result["ISBN"]; ?></td></tr>
+<!--                    <tr><td>Book Edition</td><td>1st Edition</td></tr>-->
+<!--                    <tr><td>Authors</td><td>Hawon Woo, Rebecca Chase</td></tr>-->
 <!--                    <tr><td>Pages</td><td>500</td></tr>-->
                 </table>
             </div>
-            <div class="col-md-6">
-                <h2>Purchase Options</h2>
-                <table class="table table-bordered table-condensed table-responsive">
-                    <tr>
-                        <th>Option</th>
-                        <th>Stock</th>
-                        <th>Price</th>
-                    </tr>
-                    <tr><td>New</td><td><?php echo $product['Stock'] ?></td><td>$<?php echo $product['Price']; ?></td></tr>
-                    <tr><td>Used</td><td>N/A</td><td>N/A</td></tr>
-                    <tr><td>Digital</td><td>N/A</td><td>N/A</td></tr>
-                </table>
-            </div>
+<!--            <div class="col-md-6">-->
+<!--                <h2>Purchase Options</h2>-->
+<!--                <table class="table table-bordered table-condensed table-responsive">-->
+<!--                    <tr>-->
+<!--                        <th>Option</th>-->
+<!--                        <th>Quantity</th>-->
+<!--                        <th>Price</th>-->
+<!--                    </tr>-->
+<!--                    <tr><td>New</td><td>10</td><td>$200</td></tr>-->
+<!--                    <tr><td>Used</td><td>3</td><td>$100</td></tr>-->
+<!--                    <tr><td>Digital</td><td>N/A</td><td>$100</td></tr>-->
+<!--                </table>-->
+<!--            </div>-->
         </div>
         <hr>
         <!-- Main Body End -->
 
-<?php
-include_once "includes/footer.php";
-?>
+        <?php require("includes/footer.php"); ?>
+
+        <!-- Bootstrap core JavaScript
+    ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </div>
+</body>
+
+</html>

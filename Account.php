@@ -1,6 +1,6 @@
 <?php
 include_once "includes/header.php";
-include_once "php/account_process.php";
+include_once "account_process.php";
 loadInformation();
 //Check if the person is logged in before allowing page access
 if (isset($_SESSION['id']) == false) {
@@ -34,6 +34,7 @@ if ($ERROR == "1"){
 					<!-- Account Summary tab in the account page -->
 					<div id="AccSummary" class="tab-pane fade in active">
 						<h2>Account Summary</h2>
+						<h3>Hello, Username</h3>
 						<?php
                         fillAccountSummary();
                         ?>

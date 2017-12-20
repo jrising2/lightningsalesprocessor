@@ -9,7 +9,7 @@ $GLOBALS['dbpass'] = $dbpass;
 $GLOBALS['dbname'] = $dbname;
 
 // Opens a connection to the database, sends out a query and closes the connection
-function queryDB($select,$table,$where="TRUE",$limit=20){
+function queryDB($select,$table,$where,$limit=20){
     $link = new mysqli($GLOBALS['dbhost'],$GLOBALS['dbuser'],$GLOBALS['dbpass'],$GLOBALS['dbname']);
     $query = "SELECT ".$select." FROM ".$table." WHERE ".$where." LIMIT ".$limit;
     $result = $link->query($query);
@@ -51,7 +51,7 @@ function getNextJob($employeeID){
 }
 
 function allAvailableJobs(){
-    $available = queryDB("TransactionID,CustomerID,Status,DeliveryType,GrandTotal","Transactions","isnull(EmployeeID) GROUP BY TransactionID,CustomerID,Status,DeliveryType,GrandTotal",50);
+    $available = queryDB("TransactionID,CustomerID,Status,DeliveryType,GrandTotal","Transactions","isnull(EmployeeID) GROUP BY TransactionID,CustomerID,Status,DeliveryType,GrandTotal");
     $rows = array();
     while($row = $available->fetch_array()){
         $rows[] = $row;
@@ -74,7 +74,7 @@ function getJobHistory($employeeID){
 }
 
 function getStatus($transID){
-    $select = '<select class="form-control" id="status" name="status">';
+    $select = '<select id="status" name="status">';
     $current = queryDB("Status","Transactions","TransactionID=".$transID." GROUP BY Status");
     $status = $current->fetch_assoc();
 
@@ -127,7 +127,7 @@ function printAllInformation($transactionID){
         $customer['Address2'] = $customer['Address2'].'<br>';
     }
 
-    $result = '<div class="row bs-callout bs-callout-info" style="border-color: darkgreen;">'.
+    $result = '<div class="row bs-callout" style="border-color: darkgreen;">'.
               '<div class="col-sm-3"><p><strong>First Name</strong><br>'.$customer['FirstName'].'</p></div>'.
               '<div class="col-sm-3"><p><strong>Last Name</strong><br>'.$customer['LastName'].'</p></div>'.
               '<div class="col-sm-3"><p><strong>Email</strong><br>'.$customer['Email'].'</p></div>'.
@@ -135,13 +135,13 @@ function printAllInformation($transactionID){
               '</div>';
 
     echo $result;
-    echo '<div class="row bs-callout bs-callout-info" style="border-color: black;">';
+
 
     foreach($transaction as $singleTrans){
         $productInfo = queryDB("ProductID, ProductName, Genre, ISBN, Description","Products","ProductID = ".$singleTrans['ProductID']);
         $productInfo = $productInfo->fetch_assoc();
         $printout = <<<EOD
-            <div class="row" style="margin-top: 1em;">
+            <div class="row bs-callout" style="border-color: black;">
 				<div class="col-md-2"><a href="Link to Product in image"><img src="../image/{$productInfo['ISBN']}.jpg" alt="Insert Image here" width="100" height="100"/></a></div>
 				<div class="col-md-10">
 					<div class="row">
@@ -150,11 +150,12 @@ function printAllInformation($transactionID){
 						<div class="col-md-2"> <p><strong>Quantity</strong><br>{$singleTrans['Quantity']}</p></div>
 						<div class ="col-md-2"><p><strong>Line Total</strong><br>$ {$singleTrans['LineItemTotal']}</p></div>
 					</div>
+					<div class="row">
+						<div class="col-md-12"> <pre>{$productInfo['Description']}</pre></div>
+					</div>
 				</div>
 			</div> 
 EOD;
         echo $printout;
     }
-
-    echo '</div>';
 }

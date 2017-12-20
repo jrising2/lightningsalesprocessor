@@ -22,8 +22,7 @@
 }
 .bs-callout-warning {
   background-color: #fefbed;
-  border-color: yellow;
-  /*#f1e7bc*/
+  border-color: #f1e7bc;
 }
 .bs-callout-info {
   background-color: #f0f7fd;

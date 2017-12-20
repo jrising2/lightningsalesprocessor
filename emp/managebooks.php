@@ -87,7 +87,7 @@ include "includes/employee_header.php";
             </div>
         </div>
 
-        <form enctype="multipart/form-data" action="php/managebooks_process.php" method="POST">
+        <form enctype="multipart/form-data" action="managebooks_process.php" method="POST">
             <div class="row">
                 <div class="col-md-3">
                     <div class="form-group">
@@ -173,7 +173,7 @@ include "includes/employee_header.php";
                 <hr/>
 
                 <!--This form allow for the lookup of a book by id-->
-                <form role="form" class="form-inline" method="POST" action="php/managebooks_process.php">
+                <form role="form" class="form-inline" method="POST" action="managebooks_process.php">
                     <div class="form-group">
                         <label for="editbookid">Book ID:</label>
                         <input type="text" class="form-control" name="editbookid" style="width:200px">
@@ -194,7 +194,7 @@ include "includes/employee_header.php";
                 <hr />
                 <br />
 
-                <form method="POST" action="php/managebooks_process.php">
+                <form method="POST" action="managebooks_process.php">
                     <div class="form-group">
                         <label for="confirmdel">Is this the book you want to delete?:</label>
                         <?php

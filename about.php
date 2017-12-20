@@ -3,7 +3,8 @@ include_once "includes/header.php";
 ?>
 
 <!-- Main Body Start -->
-<h1 align="center">Kent State CS Project</h1>
+<h1 align="center">Kent State CS Capstone Project</h1>
+<h3 align="center">Spring 2017</h3>
 
 <div class="well">
 <h3>Project Title</h3>
@@ -30,7 +31,7 @@ include_once "includes/header.php";
       </tr>
       <tr>
         <td>Chase Walkup</td>
-        <td>Database, Security</td>
+        <td>mary@example.com</td>
       </tr>
       <tr>
         <td>Rebecca Chase</td>
@@ -38,11 +39,11 @@ include_once "includes/header.php";
       </tr>
       <tr>
         <td>Juleyn Arnold</td>
-        <td>Account, Inventory, Book Management, Report Generation</td>
+        <td>Account, Change Password, Edit Information/Payment, Inventory View, Book Management, Report Generation</td>
       </tr>
       <tr>
         <td>Joshua Rising</td>
-        <td>Order Tracking and Management Pages.</td>
+        <td>Order tracking and management pages.</td>
       </tr>
     </tbody>
   </table>
