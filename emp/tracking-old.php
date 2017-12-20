@@ -1,0 +1,185 @@
+<?php
+ini_set('display_errors',1);
+include "./includes/employee_header.php";
+include_once "php/tracking_funcs.php";
+
+$employeeID = $_SESSION['eid'];
+
+// Checks to see if there is a new job being seeked
+
+$currentJob = getCurrentJob($employeeID);
+
+if(isset($_GET['getjob']) && $currentJob->num_rows == 0){
+    $jobs = getNextJob($employeeID);
+    if($jobs != FALSE){
+        $newjob = $jobs->fetch_assoc();
+    }else{
+        $newjob = getCurrentJob($employeeID)->fetch_assoc();
+    }
+    header('Location: tracking.php');
+}else{ // Otherwise check to see what any current assignments are.
+    if($currentJob){
+        $newjob = $currentJob->fetch_assoc();
+    }
+}
+
+if(isset($_POST['status'])){
+    if($_POST['status'] == 'open' || $_POST['status'] == 'assigned' || $_POST['status'] == 'closed'){
+        modifyTransaction($newjob['TransactionID'],"Status","'".$_POST['status']."'");
+    }
+
+    if($_POST['status'] == 'open'){
+        modifyTransaction($newjob["TransactionID"],"EmployeeID",'NULL');
+    }
+    header("Refresh:0; url=tracking.php");
+}
+?>
+
+
+<!-- Main Body Start, uses similar implementation to checkout and transaction history -->
+<body>
+    <div class="container">
+        <div class="row">
+            <!--Account page modes -->
+            <div class="col-md-3">
+                <ul class="nav nav-pills nav-stacked" id="AccTabs">
+                    <li class="active"><a data-toggle="pill" href="#InProgress">My Order</a></li>
+                    <li><a data-toggle="pill" href="#NewOrders">New Orders</a></li>
+                    <li><a data-toggle="pill" href="#History">History</a></li>
+                </ul>
+            </div>
+            
+            <div class="col-md-9">
+                <div class="tab-content">
+
+                    <!-- Account Summary tab in the account page -->
+                    <div id="InProgress" class="tab-pane fade in active">
+                        <h2>My Orders</h2>
+
+                        <div class="panel-body">
+                            <div class="row">
+                                <form action="tracking.php" method="post">
+                                <?php if(isset($newjob)){ ?>
+                                <div class="row bs-callout bs-callout-warning">
+                                    <div class="col-md-2">
+                                        <p><strong>Transaction</strong>
+                                            <br><?php echo $newjob['TransactionID'] ?></p>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <p><strong><span style="color: darkgreen;">Customer</span></strong><br><?php echo $newjob['CustomerID']; ?></p>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <p><strong>Method</strong>
+                                            <br><?php echo $newjob['DeliveryType']; ?>
+                                        </p>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <p><strong>Status</strong>
+                                            <br><?php getStatus($newjob['TransactionID']); ?></p>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <p><strong>Total</strong>
+                                            <br>$<?php echo $newjob['GrandTotal'] ?>
+                                        </p>
+                                    </div>
+                                    <div class="col-md-2 form-inline">
+                                        <button type="submit" class="btn btn-primary">Change</button><br>
+<!--                                        <a class="btn btn-primary" href="#">More Info</a>-->
+                                    </div>
+                                </div>
+                                <?php }else{echo '<p>No job is currently assigned.</p>';} printAllInformation($newjob); ?>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Past/Current Transactions/Orders in the account page-->
+                    <div id="NewOrders" class="tab-pane fade">
+                        <h2>Orders</h2>
+                        <a href="tracking.php?getjob=1" class="btn btn-primary">Get Next Job</a>
+
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <?php $allrows = allAvailableJobs();
+                                    if(empty($allrows)) echo '<p>There are currently no jobs in the queue.</p>';
+                                    foreach($allrows as $singlejob){
+                                    ?>
+                                    <div class="row bs-callout bs-callout-success">
+                                        <div class="col-md-2">
+                                            <p><strong>Transaction</strong>
+                                                <br><?php echo $singlejob['TransactionID']; ?></p>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <p><strong>Customer</strong><br><?php echo $singlejob['CustomerID']; ?></p>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <p><strong>Method</strong>
+                                                <br><?php echo $singlejob['DeliveryType']; ?>
+                                            </p>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <p><strong>Status</strong>
+                                                <br><?php echo $singlejob['Status']; ?></p>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <p><strong>Total</strong>
+                                                <br>$<?php echo $singlejob['GrandTotal']; ?>
+                                            </p>
+                                        </div>
+<!--                                        <div class="col-md-2 form-inline">-->
+<!--                                            <a class="btn btn-danger" href="#">Change</a><br>-->
+<!--                                            <a class="btn btn-primary" href="#">More Info</a>-->
+<!--                                        </div>-->
+                                    </div>
+                                    <?php } ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="History" class="tab-pane fade">
+                        <h2>Order History</h2>
+                        <div class="panel-body">
+                            <?php $jobHistory = getJobHistory($employeeID); $i = end($jobHistory); do{ ?>
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <div class="row bs-callout bs-callout-danger">
+                                        <div class="col-md-2">
+                                            <p><strong>Transaction</strong>
+                                                <br><?php echo '<a href="orders.php?id='.$i['TransactionID'].'">'.$i['TransactionID'].'</a>' ?></p>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <p><strong>Customer</strong><br><?php echo $i['CustomerID']; ?></p>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <p><strong>Method</strong>
+                                                <br><?php echo $i['DeliveryType']; ?>
+                                            </p>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <p><strong>Status</strong>
+                                                <br><?php echo $i['Status']; ?></p>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <p><strong>Total</strong>
+                                                <br>$<?php echo $i['GrandTotal']; ?>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <?php }while($i = prev($jobHistory)) ?>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+        <!-- Main Body End -->
+
+<?php
+include_once "includes/footer_empty.php";
+?>

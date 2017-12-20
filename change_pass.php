@@ -24,7 +24,7 @@ if (isset($_SESSION['id']) == false) {
                     <div class="col-md-4">
                     <h2 align="center">Change Password</h2><br>
 
-                    <form role="form" action="change_pass_process.php" method="POST">
+                    <form role="form" action="php/change_pass_process.php" method="POST">
                         <div class="form-group">
                             <label for="currentpass">Current Password</label>
                             <input type="password" class="form-control" name="currentpass">

@@ -18,17 +18,8 @@ var report_type = "";
         </div>
         <div class="panel-body">
             <div class="row" style="padding-bottom:20px">
-                <div class="col-md-2">
-                    <button class="btn btn-primary btn-block" style="width:150px">Step 1<br>Selection</button>
-                </div>
-                <div class="col-md-2">
-                    <button class="btn btn-primary btn-block" style="width:150px">Step 2<br>Filtering</button>
-                </div>
-                <div class="col-md-2">
-                    <button  class="btn btn-primary btn-block" style="width:150px">Step 3<br>Generation</button>
-                </div>
             </div>
-            <form role="form" id="form_generate" action="printables_process.php" method="POST">
+            <form role="form" id="form_generate" action="php/printables_process.php" method="POST">
                 <div class="panel panel-default">
                      <!--Hidden Tab to navigate between steps-->
                      <div class="panel-body">
@@ -41,13 +32,16 @@ var report_type = "";
 
                         <div class="tab-content">
                             <div id="Step1" class="tab-pane active">
-                                <h3>Choose the Type to generate:</h3>
+                                <h3>Choose the type to generate:</h3>
                                 <div class="form-group">
                                     <div class="radio">
                                         <label><input type="radio" name="whichreport" id="salesreport" value="sales">Sales Report</label>
                                     </div>
                                     <div class="radio">
                                         <label><input type="radio" name="whichreport" id="employeesreport" value="employees">Employee Report</label>
+                                    </div>
+									<div class="radio">
+                                        <label><input type="radio" name="whichreport" id="stockreport" value="stock">Stock Report</label>
                                     </div>
                                 </div>
                             </div>
@@ -114,25 +108,32 @@ var report_type = "";
 		
 		//NEXT FUNCTION
         $("#next").click(function() {
-			
             if ($("#next").val() == "step2") { //In Step1 to Step2
                 //determine which step 2:
                 if ($("#salesreport").is(":checked")  == true) {
-                    $.get("printables_sales_step2.php", function(data){
+                    $.get("php/printables_sales_step2.php", function(data){
                         if (report_type != "Sales"){
                             $("#Step2").html(data);
                             report_type = "Sales";
                         }
                     });
                 }else if ($("#employeesreport").is(":checked") == true){
-                    $.get("printables_employees_step2.php", function(data){
+                    $.get("php/printables_employees_step2.php", function(data){
                         if (report_type != "Employees"){
                             $("#Step2").html(data);
                             report_type = "Employees";
                         }
                     });
+				} else if($("#stockreport").is(":checked") == true){
+					//Get ready to generate stock report (currently has no filtering options for time sake)
+					report_type = "Stock";
+					$("#previous").val("step1");
+					$("#next").val("generate");
+					$("#next").text("Generate");
+					$('#all_steps a[href="#Step4"]').tab('show');
+					return;
                 } else {
-                    //neither selected
+                    //Nothing selected selected
                     alert("No report type has been selected");
                     return;
                 }
@@ -153,11 +154,11 @@ var report_type = "";
 				}
 				//prep for step 3
 				if (report_type == "Sales") {
-					$.get("printables_sales_step3.php", function(data){
+					$.get("php/printables_sales_step3.php", function(data){
 						$("#Step3").html(data);
 					});
 				}else if (report_type == "Employees") {
-					$.get("printables_employees_step3.php", function(data){
+					$.get("php/printables_employees_step3.php", function(data){
 						$("#Step3").html(data);
 					});
 				}
@@ -187,12 +188,15 @@ var report_type = "";
 				
                 //our form's submit will be called here here.
                 if (report_type == "Sales") {
-                    document.getElementById("form_generate").action = "printables_process_sales_report.php";
+                    document.getElementById("form_generate").action = "php/printables_process_sales_report.php";
 					document.getElementById("form_generate").submit();
                 }else if (report_type == "Employees"){
-                    document.getElementById("form_generate").action = "printables_process_employees_report.php";
+                    document.getElementById("form_generate").action = "php/printables_process_employees_report.php";
 					document.getElementById("form_generate").submit();
-                }
+                } else if (report_type == "Stock") {
+					document.getElementById("form_generate").action = "php/printables_process_stock_report.php";
+					document.getElementById("form_generate").submit();
+				}
             }
         });
     </script>

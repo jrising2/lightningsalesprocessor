@@ -62,11 +62,11 @@ if(isset($_POST['status'])){
                                 <?php if(isset($newjob)){ ?>
                                 <div class="row bs-callout bs-callout-warning">
                                     <div class="col-md-2">
-                                        <p><strong>TransID</strong>
+                                        <p><strong>Transaction</strong>
                                             <br><?php echo $newjob['TransactionID'] ?></p>
                                     </div>
                                     <div class="col-md-2">
-                                        <p><strong><span style="color: darkgreen;">Customer</span>ID</strong><br><?php echo $newjob['CustomerID']; ?></p>
+                                        <p><strong><span style="color: darkgreen;">Customer</span></strong><br><?php echo $newjob['CustomerID']; ?></p>
                                     </div>
                                     <div class="col-md-2">
                                         <p><strong>Method</strong>
@@ -107,11 +107,11 @@ if(isset($_POST['status'])){
                                     ?>
                                     <div class="row bs-callout bs-callout-success">
                                         <div class="col-md-2">
-                                            <p><strong>TransID</strong>
+                                            <p><strong>Transaction</strong>
                                                 <br><?php echo $singlejob['TransactionID']; ?></p>
                                         </div>
                                         <div class="col-md-2">
-                                            <p><strong>CustomerID</strong><br><?php echo $singlejob['CustomerID']; ?></p>
+                                            <p><strong>Customer</strong><br><?php echo $singlejob['CustomerID']; ?></p>
                                         </div>
                                         <div class="col-md-2">
                                             <p><strong>Method</strong>
@@ -141,35 +141,35 @@ if(isset($_POST['status'])){
                     <div id="History" class="tab-pane fade">
                         <h2>Order History</h2>
                         <div class="panel-body">
-                            <?php $jobHistory = getJobHistory($employeeID); foreach($jobHistory as $singlejob){ ?>
+                            <?php $jobHistory = getJobHistory($employeeID); $i = end($jobHistory); do{ ?>
                             <div class="row">
                                 <div class="col-md-10">
                                     <div class="row bs-callout bs-callout-danger">
                                         <div class="col-md-2">
-                                            <p><strong>TransID</strong>
-                                                <br><?php echo $singlejob['TransactionID']; ?></p>
+                                            <p><strong>Transaction</strong>
+                                                <br><?php echo '<a href="orders.php?id='.$i['TransactionID'].'">'.$i['TransactionID'].'</a>' ?></p>
                                         </div>
                                         <div class="col-md-2">
-                                            <p><strong>CustomerID</strong><br><?php echo $singlejob['CustomerID']; ?></p>
+                                            <p><strong>Customer</strong><br><?php echo $i['CustomerID']; ?></p>
                                         </div>
                                         <div class="col-md-2">
                                             <p><strong>Method</strong>
-                                                <br><?php echo $singlejob['DeliveryType']; ?>
+                                                <br><?php echo $i['DeliveryType']; ?>
                                             </p>
                                         </div>
                                         <div class="col-md-2">
                                             <p><strong>Status</strong>
-                                                <br><?php echo $singlejob['Status']; ?></p>
+                                                <br><?php echo $i['Status']; ?></p>
                                         </div>
                                         <div class="col-md-2">
                                             <p><strong>Total</strong>
-                                                <br>$<?php echo $singlejob['GrandTotal']; ?>
+                                                <br>$<?php echo $i['GrandTotal']; ?>
                                             </p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <?php } ?>
+                            <?php }while($i = prev($jobHistory)) ?>
                         </div>
                     </div>
 

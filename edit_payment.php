@@ -44,7 +44,7 @@ if ($ERROR == "1"){
                 echo '<h2>Edit Payment Information</h2>';
             }
             ?>
-            <form role="form" action="edit_payment_process.php" method="POST">
+            <form role="form" action="php/edit_payment_process.php" method="POST">
                 <div class="form-group tight-form-group">
                     <div class="row">
                         <div class="col-md-3">

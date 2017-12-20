@@ -13,7 +13,7 @@ checkCardExist($_SESSION["id"]);
 function cardOption($cid){
   $row = customerCards($cid);  
   foreach($row as $card){
-    $last4 = substr($card["CardNumber"],-4);
+    $last4 = substr(decrypt($card["CardNumber"],$_SESSION["id"]),-4);
     $bid = $card["BillingID"];
     echo "<input type='radio' name='card' value='$bid' required='required'> $last4<br>";
   }
